@@ -25,13 +25,13 @@ const DetailedFeature: React.FC<DetailedFeatureProps> = ({
       reverse && "md:flex-row-reverse"
     )}>
         <div className="flex-1 space-y-4">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{headline}</h2>
-            <h3 className="text-xl text-gray-500">{subheadline}</h3>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-gray-900">{headline}</h2>
+            <h3 className="text-lg sm:text-xl md:text-2xl text-gray-500">{subheadline}</h3>
 
             <ul className="space-y-2">
                 {bulletPoints.map((point, index) => (
-                    <li key={index} className="flex items-center">
-                        <svg className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <li key={index} className="flex items-center text-sm sm:text-base md:text-lg">
+                        <svg className="h-4 w-4 sm:h-5 sm:w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                         {point}

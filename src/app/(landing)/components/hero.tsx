@@ -5,7 +5,7 @@ import Image from 'next/image'
 const ResponsiveHero = () => {
   return (
     // margin top to accomodate the header height
-    <div className="flex flex-col md:flex-row items-center justify-around min-h-screen -mt-20 px-4 sm:px-10 max-w-screen-lg">
+    <div className="flex flex-col md:flex-row items-center justify-around pt-10 pb-10 px-4 sm:px-10 max-w-screen-lg">
         <HeroLeft 
             headline="Study Smart, Study Together!"
             subheadline="Unlock your academic potential with science-based collaborative learning."
