@@ -45,7 +45,7 @@ const ForgetPasswordUI = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen w-screen max-w-screen-md mx-auto space-y-4">
+    <div className="flex flex-col justify-center items-center min-h-screen w-screen max-w-screen-md mx-auto space-y-4 p-8">
         <TextLogo
           text="Quizzly"
           color="#0065F2"
@@ -54,8 +54,8 @@ const ForgetPasswordUI = () => {
           fontFamily="sans-serif"
         />
         <div className="flex flex-col justify-center items-center">
-            <h1 className="text-2xl font-bold">Forgot your password?</h1>
-            <p className="text-sm text-gray-500">Enter your email address and we will send you a link to reset your password.</p>
+            <h1 className="text-xl sm:text-2xl text-left w-full font-bold">Forgot your password?</h1>
+            <p className="text-xs sm:text-base text-gray-500">Enter your email address and we will send you a link to reset your password.</p>
         </div>
 
         {error && <p className="text-sm text-red-500 text-center bg-red-200 p-2 rounded-md">{error}</p>}
