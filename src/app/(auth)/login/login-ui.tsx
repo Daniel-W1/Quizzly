@@ -54,14 +54,11 @@ const LoginUI = () => {
 
   const handleGoogleSignIn = async () => {
     try {
-      setLoading(true);
       setAuthError("");
       await handleGoogle();
     } catch (error) {
       console.error("Error signing in with Google:", error);
       setAuthError("Failed to sign in with Google. Please try again.");
-    } finally {
-      setLoading(false);
     }
   };
 
