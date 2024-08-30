@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
 import { handleEmailSignUp, handleGoogle } from "@/app/actions/auth";
-import { useRouter } from "next/navigation";
 import {
   Form,
   FormControl,
@@ -23,9 +22,10 @@ import { useState } from "react";
 import { Loader2 } from "lucide-react";
 
 const SignupUI = () => {
-  const router = useRouter();
   const [authError, setAuthError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [googleLoading, setGoogleLoading] = useState<boolean>(false);
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -38,18 +38,32 @@ const SignupUI = () => {
   const onSubmit = async (values: z.infer<typeof signupSchema>) => {
     try {
       setLoading(true);
-      setAuthError("");
+      setAuthError(null);
+      setSuccess(null);
       const result = await handleEmailSignUp(values.email, values.password);
       if (result?.error) {
         setAuthError(result.error);
-      } else {
-        router.push("/onboarding");
+      } else if ('success' in result) {
+        setSuccess(result.success);
+        form.reset();
       }
     } catch (error) {
       console.error("Error signing up:", error);
       setAuthError("An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleGoogleSignUp = async () => {
+    try {
+      setGoogleLoading(true);
+      await handleGoogle();
+    } catch (error) {
+      console.error("Error signing up with Google:", error);
+      setAuthError("An unexpected error occurred. Please try again.");
+    } finally {
+      setGoogleLoading(false);
     }
   };
 
@@ -75,6 +89,10 @@ const SignupUI = () => {
 
             {authError && (
               <p className="text-sm text-red-500 text-center bg-red-200 p-2 rounded-md">{authError}</p>
+            )}
+
+            {success && (
+              <p className="text-sm text-green-500 text-center bg-green-200 p-2 rounded-md">{success}</p>
             )}
 
             <div className="space-y-4">
@@ -130,7 +148,7 @@ const SignupUI = () => {
                   Log in
                 </Link>
               </p>
-              <Button type="button" onClick={() => handleGoogle()} disabled={loading}>Sign up with Google</Button>
+              <Button type="button" onClick={() => handleGoogleSignUp()} disabled={loading || googleLoading}>Sign up with Google</Button>
             </div>
           </form>
         </Form>

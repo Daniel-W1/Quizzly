@@ -15,7 +15,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { loginSchema } from "@/lib/form-schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,6 +26,7 @@ const LoginUI = () => {
   const router = useRouter();
   const [authError, setAuthError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [googleLoading, setGoogleLoading] = useState<boolean>(false);
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -55,10 +56,13 @@ const LoginUI = () => {
   const handleGoogleSignIn = async () => {
     try {
       setAuthError("");
+      setGoogleLoading(true);
       await handleGoogle();
     } catch (error) {
       console.error("Error signing in with Google:", error);
       setAuthError("Failed to sign in with Google. Please try again.");
+    } finally {
+      setGoogleLoading(false);
     }
   };
 
@@ -73,7 +77,10 @@ const LoginUI = () => {
           fontFamily="sans-serif"
         />
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col space-y-4 mt-8">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col space-y-4 mt-8"
+          >
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold">Login</h1>
               <p className="text-sm sm:text-base text-gray-500">
@@ -82,7 +89,9 @@ const LoginUI = () => {
             </div>
 
             {authError && (
-              <p className="text-sm text-red-500 text-center bg-red-200 p-2 rounded-md">{authError}</p>
+              <p className="text-sm text-red-500 text-center bg-red-200 p-2 rounded-md">
+                {authError}
+              </p>
             )}
 
             <div className="space-y-4">
@@ -106,23 +115,41 @@ const LoginUI = () => {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="Your password" {...field} />
+                      <Input
+                        type="password"
+                        placeholder="Your password"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <Link
-                href="/forget-password"
-                className="text-sm text-red-400 hover:underline block text-right"
-              >
-                Forget Password
-              </Link>
+              <div className="flex justify-between">
+                <Link
+                  href="/resend-verification-email"
+                  className="text-sm text-gray-500 underline hover:underline block text-right"
+                >
+                  Verify Email
+                </Link>
+                <Link
+                  href="/forget-password"
+                  className="text-sm text-red-400 hover:underline block text-right"
+                >
+                  Forget Password
+                </Link>
+              </div>
             </div>
 
             <div className="flex flex-col space-y-2">
-              <Button type="submit" className="gap-2" disabled={loading}>
-                {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+              <Button
+                type="submit"
+                className="gap-2"
+                disabled={loading || googleLoading}
+              >
+                {loading ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : null}
                 {loading ? "Signing in..." : "Sign in"}
               </Button>
               <p className="text-sm text-gray-500 text-center">
@@ -131,7 +158,11 @@ const LoginUI = () => {
                   Sign up
                 </Link>
               </p>
-              <Button type="button" onClick={handleGoogleSignIn} disabled={loading}>
+              <Button
+                type="button"
+                onClick={handleGoogleSignIn}
+                disabled={loading || googleLoading}
+              >
                 Sign in with Google
               </Button>
             </div>
@@ -139,7 +170,13 @@ const LoginUI = () => {
         </Form>
       </div>
 
-      <Image src="/reading.svg" width={600} height={500} alt="reading" className="hidden lg:block" />
+      <Image
+        src="/reading.svg"
+        width={600}
+        height={500}
+        alt="reading"
+        className="hidden lg:block"
+      />
     </div>
   );
 };

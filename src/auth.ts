@@ -37,6 +37,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           throw new Error("User not found")
         }
 
+        // check the account provider is credentials
+        const account = await db.account.findFirst({
+          where: {
+            userId: user.id!,
+            provider: "credentials",
+          },
+        })
+        if (!account) {
+          throw new Error("Account not found, please use appropriate provider to sign in")
+        }
+
+        // check if user is verified
+        if (!user.emailVerified) {
+          throw new Error("Email not verified. Please check your email for the verification link or Get a new one.")
+        }
+
         const is_password_correct = bcrypt.compareSync(password as string, user.password as string)
         if (!is_password_correct) {
           throw new Error("Invalid credentials")

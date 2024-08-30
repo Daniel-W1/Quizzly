@@ -6,18 +6,18 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import React, { useState } from 'react'
 import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { z } from "zod" 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { handleForgetPassword } from '@/app/actions/auth';
+import { resendEmailVerification } from '@/app/actions/auth';
 import { Loader2 } from "lucide-react";
 
-const forgetPasswordSchema = z.object({
+const resendVerificationSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
 })
 
-const ForgetPasswordUI = () => {
-  const form = useForm<z.infer<typeof forgetPasswordSchema>>({
-    resolver: zodResolver(forgetPasswordSchema),
+const ResendVerificationUI = () => {
+  const form = useForm<z.infer<typeof resendVerificationSchema>>({
+    resolver: zodResolver(resendVerificationSchema),
     defaultValues: {
       email: "",
     },
@@ -25,20 +25,20 @@ const ForgetPasswordUI = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
-  const onSubmit = async (values: z.infer<typeof forgetPasswordSchema>) => {
+  const onSubmit = async (values: z.infer<typeof resendVerificationSchema>) => {
     setLoading(true);
     setError("");
     setSuccess("");
     try {
-      const response = await handleForgetPassword(values.email);
+      const response = await resendEmailVerification(values.email);
       if (response.error) {
         setError(response.error);
       } else {
-        setSuccess("Password reset email sent successfully.");
+        setSuccess("Verification email sent successfully.");
       }
     } catch (error) {
-      console.error("Error forgetting password:", error);
-      setError("Failed to send reset email. Please try again later.");
+      console.error("Error resending verification email:", error);
+      setError("Failed to resend verification email. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -54,8 +54,8 @@ const ForgetPasswordUI = () => {
           fontFamily="sans-serif"
         />
         <div className="flex flex-col justify-center items-center">
-            <h1 className="text-xl sm:text-2xl text-center w-full font-bold">Forgot your password?</h1>
-            <p className="text-xs sm:text-base text-gray-500">Enter your email address and we will send you a link to reset your password.</p>
+            <h1 className="text-xl sm:text-2xl w-full font-bold text-center">Resend verification email</h1>
+            <p className="text-xs sm:text-base text-gray-500">Enter your email address and we will send you a link to verify your email.</p>
         </div>
 
         {error && <p className="text-sm text-red-500 text-center bg-red-200 p-2 rounded-md">{error}</p>}
@@ -78,7 +78,7 @@ const ForgetPasswordUI = () => {
             />
             <Button type="submit" className="w-full gap-2" disabled={loading}>
               {loading ? <Loader2 className="animate-spin" /> : null}
-              {loading ? "Sending reset email..." : "Send reset email"}
+              {loading ? "Sending verification email..." : "Send verification email"}
             </Button>
           </form>
         </Form>
@@ -86,4 +86,4 @@ const ForgetPasswordUI = () => {
   )
 }
 
-export default ForgetPasswordUI
+export default ResendVerificationUI

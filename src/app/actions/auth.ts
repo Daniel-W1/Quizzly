@@ -7,6 +7,7 @@ import bcrypt from "bcryptjs";
 import { prisma as db } from "../../prisma";
 import { isRedirectError } from "next/dist/client/components/redirect";
 import axios from "axios";
+import nodemailer from "nodemailer";
 
 export const handleGoogle = async () => {
   try {
@@ -38,43 +39,55 @@ export const handleEmailSignIn = async (email: string, password: string) => {
     if (isRedirectError(error)) {
       throw error;
     }
-    throw new Error(
-      "An unexpected error occurred during sign in. Please try again later."
-    );
+    return {
+      error: "An unexpected error occurred during sign in. Please try again later.",
+    };
   }
 };
 
 export const handleEmailSignUp = async (email: string, password: string) => {
   try {
-    const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = bcrypt.hashSync(password, salt);
-
-    const user = await db.user.findUnique({
+    const existingUser = await db.user.findUnique({
       where: {
         email,
       },
     });
 
-    if (user) {
+    if (existingUser) {
       return {
         error:
           "An account with this email already exists. Please use a different email or try logging in.",
       };
     }
 
-    await db.user.create({
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(password, salt);
+
+    const newUser = await db.user.create({
       data: {
         email,
         password: hashedPassword,
       },
     });
 
-    const signInResult = await handleEmailSignIn(email, password);
-    return signInResult;
+    const emailVerificationToken = await bcrypt.hash(newUser.id, 10);
+    const emailVerificationTokenExpiry = new Date(
+      Date.now() + 24 * 60 * 60 * 1000 // 24 hours
+    );
+
+    await db.user.update({
+      where: {
+        id: newUser.id,
+      },
+      data: {
+        emailVerificationToken,
+        emailVerificationTokenExpiry,
+      },
+    });
+
+    return await sendEmailVerification(newUser.email!, emailVerificationToken);
   } catch (error) {
-    if (error instanceof Error) {
-      return { error: `Failed to create account: ${error.message}` };
-    }
+    console.error("Error in handleEmailSignUp:", error);
     return {
       error:
         "An unexpected error occurred during sign up. Please try again later.",
@@ -99,18 +112,22 @@ export const handleSignOut = async () => {
     if (isRedirectError(error)) {
       throw error;
     }
+    console.error("Error in handleSignOut:", error);
     throw new Error("Failed to sign out. Please try again later.");
   }
 };
 
 export const handleForgetPassword = async (email: string) => {
   try {
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/forget-password`,  {
-      email
-    });
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/forget-password`,
+      {
+        email,
+      }
+    );
     return response.data;
   } catch (error) {
-    console.error("Error forgetting password:", error);
+    console.error("Error in handleForgetPassword:", error);
     return { error: "Failed to send reset email. Please try again later." };
   }
 };
@@ -120,13 +137,94 @@ export const handleResetPassword = async (
   newPassword: string
 ) => {
   try {
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/reset-password`, {
-      token,
-      newPassword
-    });
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/reset-password`,
+      {
+        token,
+        newPassword,
+      }
+    );
     return response.data;
   } catch (error) {
-    console.error("Error resetting password:", error);
+    console.error("Error in handleResetPassword:", error);
     return { error: "Failed to reset password. Please try again later." };
+  }
+};
+
+export const sendEmailVerification = async (email: string, token: string) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      host: process.env.EMAIL_SERVER_HOST,
+      port: parseInt(process.env.EMAIL_SERVER_PORT!, 10),
+      auth: {
+        user: process.env.EMAIL_SERVER_USER,
+        pass: process.env.EMAIL_SERVER_PASSWORD,
+      },
+    });
+
+    const verificationUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?emailtoken=${token}`;
+
+    await transporter.sendMail({
+      to: email,
+      subject: "Email Verification",
+      html: `<p>Please click the link below to verify your email:</p>
+             <a href="${verificationUrl}">Verify Email</a>`,
+    });
+
+    return { success: "Email verification sent. Please check your email." };
+  } catch (error) {
+    console.error("Error in sendEmailVerification:", error);
+    return {
+      error: "Failed to send email verification. Please try again later.",
+    };
+  }
+};
+
+export const resendEmailVerification = async (email: string) => {
+  try {
+    const user = await db.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      return {
+        error: "User not found",
+      };
+    }
+
+    const account = await db.account.findFirst({
+      where: {
+        userId: user.id!,
+        provider: "credentials",
+      },
+    })
+
+    if (!account) {
+      throw new Error("Account not found, please use appropriate provider to sign in")
+    }
+    
+    const emailVerificationToken = await bcrypt.hash(user.id, 10);
+    const emailVerificationTokenExpiry = new Date(
+      Date.now() + 24 * 60 * 60 * 1000 // 24 hours
+    );
+
+    await db.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        emailVerificationToken,
+        emailVerificationTokenExpiry,
+      },
+    });
+
+    return await sendEmailVerification(user.email!, emailVerificationToken);
+  } catch (error) {
+    console.error("Error in resendEmailVerification:", error);
+    return {
+      error: "Failed to resend email verification. Please try again later.",
+    };
   }
 };

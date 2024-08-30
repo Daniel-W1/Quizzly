@@ -44,7 +44,6 @@ const ResetPasswordUI = () => {
     }
   }, [token, router]);
 
-    console.log(token, "token");
   const form = useForm<z.infer<typeof resetPasswordSchema>>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
