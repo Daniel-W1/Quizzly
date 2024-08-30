@@ -41,11 +41,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const account = await db.account.findFirst({
           where: {
             userId: user.id!,
-            provider: "credentials",
+            provider: "google",
           },
         })
-        if (!account) {
-          throw new Error("Account not found, please use appropriate provider to sign in")
+        if (account) {
+          throw new Error("Account already linked to a user, please use appropriate provider to sign in")
         }
 
         // check if user is verified
