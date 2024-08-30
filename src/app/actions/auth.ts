@@ -197,14 +197,19 @@ export const resendEmailVerification = async (email: string) => {
     const account = await db.account.findFirst({
       where: {
         userId: user.id!,
-        provider: "credentials",
+        provider: "google",
       },
     })
 
-    if (!account) {
-      throw new Error("Account not found, please use appropriate provider to sign in")
+    if (account) {
+      throw new Error("Account already linked to a user, please use appropriate provider to sign in")
     }
-    
+
+    // check if user is already verified
+    if (user.emailVerified) {
+      throw new Error("Email already verified. Please sign in.")
+    }
+
     const emailVerificationToken = await bcrypt.hash(user.id, 10);
     const emailVerificationTokenExpiry = new Date(
       Date.now() + 24 * 60 * 60 * 1000 // 24 hours
@@ -224,7 +229,7 @@ export const resendEmailVerification = async (email: string) => {
   } catch (error) {
     console.error("Error in resendEmailVerification:", error);
     return {
-      error: "Failed to resend email verification. Please try again later.",
+      error: `Failed to resend email verification. ${error}`,
     };
   }
 };
