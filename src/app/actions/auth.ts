@@ -204,6 +204,10 @@ export const resendEmailVerification = async (email: string) => {
     if (account) {
       throw new Error("Account already linked to a user, please use appropriate provider to sign in")
     }
+    // check if there is an unexpired email verification token
+    if (user.emailVerificationToken && user.emailVerificationTokenExpiry && user.emailVerificationTokenExpiry > new Date()) {
+      throw new Error("Email verification already sent. Please check your email.")
+    }
 
     // check if user is already verified
     if (user.emailVerified) {
