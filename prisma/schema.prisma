@@ -42,6 +42,7 @@ model User {
   emailVerified DateTime? @map("email_verified")
   image         String?
   password      String?
+  onboarded     Boolean   @default(false)
   resetToken    String? @unique
   resetTokenExpiry DateTime? @map("reset_token_expiry")
   emailVerificationToken String? @unique

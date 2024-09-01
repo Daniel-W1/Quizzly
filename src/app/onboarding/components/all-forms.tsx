@@ -60,12 +60,13 @@ const AllOnboardingSteps = () => {
             return;
         }
 
-        setLoading(true);
         try {
+            setLoading(true);
             const profile = form.getValues();
             const result = await createProfile(profile);
 
             if ('error' in result) {
+                setLoading(false);
                 setError(result.error);
                 return;
             }
@@ -107,7 +108,7 @@ const AllOnboardingSteps = () => {
                         {loading && <Loader2 className="w-4 h-4 ml-2 animate-spin" />}
                     </Button>
                 </div>
-                {error && <p className="text-red-500 text-center">{error}</p>}
+                {error && <p className="text-red-500 text-center max-w-md px-8 py-2">{error}</p>}
             </form>
         </Form>
     </div>;

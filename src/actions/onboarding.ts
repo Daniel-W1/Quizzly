@@ -36,6 +36,15 @@ export const createProfile = async (profile: z.infer<typeof profileSchema>) => {
       },
     });
 
+    await db.user.update({
+      where: {
+        id: userId
+      },
+      data: {
+        onboarded: true
+      }
+    })
+
     await unstable_update({
       user: {
         onboarded: true

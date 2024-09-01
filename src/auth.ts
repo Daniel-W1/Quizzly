@@ -42,17 +42,6 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
           throw new Error("User not found")
         }
 
-        // check the account provider is credentials
-        const account = await db.account.findFirst({
-          where: {
-            userId: user.id!,
-            provider: "google",
-          },
-        })
-        if (account) {
-          throw new Error("Account already linked to a user, please use appropriate provider to sign in")
-        }
-
         // check if user is verified
         if (!user.emailVerified) {
           throw new Error("Email not verified. Please check your email for the verification link or Get a new one.")
@@ -63,19 +52,12 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
           throw new Error("Invalid credentials")
         }
 
-        // check onboarded
-        const profile = await db.profile.findUnique({
-          where: {
-            userId: user.id
-          }
-        })
-
         return {
             id: user.id,
             name: user.name,
             email: user.email,
             image: user.image,
-            onboarded: profile ? true : false
+            onboarded: user.onboarded
         }
       },
     }),
