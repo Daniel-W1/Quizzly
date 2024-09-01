@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { handleEmailSignIn, handleGoogle } from "@/app/actions/auth";
+import { handleEmailSignIn, handleGoogle } from "@/actions/auth";
 import {
   Form,
   FormControl,

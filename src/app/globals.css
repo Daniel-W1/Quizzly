@@ -67,3 +67,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.education-form::-webkit-scrollbar {
+  display: none;
+}

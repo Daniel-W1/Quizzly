@@ -1,16 +1,15 @@
-'use client'
-
-import { Button } from '@/components/ui/button'
-import { handleSignOut } from '@/app/actions/auth'
 import React from 'react'
+import AllOnboardingSteps from './components/all-forms'
+import SignOutButton from '@/components/sign-out'
 
-const Onboarding = () => {
+const Onboarding = async () => {
   return (
-    <div>
-        Onboarding
-        <Button onClick={() => handleSignOut()}>
-            Sign Out
-        </Button>
+    <div className='flex flex-col items-center justify-center min-h-screen'>
+      <div className='flex justify-end w-full px-2 md:px-8 py-4 absolute top-0'>
+        <SignOutButton />
+      </div>
+
+      <AllOnboardingSteps />
     </div>
   )
 }

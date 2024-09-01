@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { handleResetPassword } from "@/app/actions/auth";
+import { handleResetPassword } from "@/actions/auth";
 import { z } from "zod";
 import { passwordSchema } from "@/lib/form-schemas";
 import {

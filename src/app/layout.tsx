@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
+import { ourFileRouter } from "@/app/api/uploadthing/core";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +19,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-        <body className={`${inter.className} overflow-x-hidden`}>{children}</body>
+      <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
+      <body className={`${inter.className} overflow-x-hidden`}>{children}</body>
     </html>
   );
 }

@@ -47,6 +47,23 @@ model User {
   emailVerificationToken String? @unique
   emailVerificationTokenExpiry DateTime? @map("email_verification_token_expiry")
   accounts      Account[]
+  profile       Profile?
 
   @@map("users")
+}
+
+model Profile {
+  id          String   @id @default(cuid())
+  name        String
+  username    String   @unique
+  university  String
+  department  String
+  year        String
+  bio         String?
+  image       String?
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String   @unique
+
+  @@map("profiles")
 }

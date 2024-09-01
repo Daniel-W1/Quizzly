@@ -18,6 +18,8 @@ export default auth((req) => {
     const isLoggedIn = !!req.auth;
     const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+    const isOnboardingRoute = nextUrl.pathname.startsWith('/onboarding');
+    const isOnboarded = req.auth?.user?.onboarded;
 
     if (isApiAuthRoute) {
         return NextResponse.next();
@@ -29,6 +31,14 @@ export default auth((req) => {
 
     if (!isLoggedIn && !isAuthRoute && !isApiAuthRoute) {
         return NextResponse.redirect(new URL("/login", nextUrl));
+    }
+
+    if (isLoggedIn && !isOnboardingRoute && !isOnboarded) {
+        return NextResponse.redirect(new URL("/onboarding", nextUrl));
+    }
+
+    if (isLoggedIn && isOnboardingRoute && isOnboarded) {
+        return NextResponse.redirect(new URL("/search", nextUrl));
     }
 
     return NextResponse.next();

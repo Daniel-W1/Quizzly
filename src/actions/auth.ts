@@ -1,10 +1,10 @@
 "use server";
 
 import { AuthError } from "next-auth";
-import { signIn, signOut } from "../../auth";
-import { auth } from "../../auth";
+import { signIn, signOut } from "../auth";
+import { auth } from "../auth";
 import bcrypt from "bcryptjs";
-import { prisma as db } from "../../prisma";
+import { prisma as db } from "../prisma";
 import { isRedirectError } from "next/dist/client/components/redirect";
 import axios from "axios";
 import nodemailer from "nodemailer";

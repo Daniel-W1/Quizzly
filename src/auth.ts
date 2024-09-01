@@ -5,8 +5,13 @@ import credentials from "next-auth/providers/credentials"
 import bcrypt from "bcryptjs"
 import google from "next-auth/providers/google"
 
+declare module "next-auth" {
+  interface User {
+    onboarded: boolean;
+  }
+}
  
-export const { handlers, auth, signIn, signOut } = NextAuth({
+export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
   adapter: PrismaAdapter(db),
   session: {
     strategy: "jwt",
@@ -58,12 +63,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           throw new Error("Invalid credentials")
         }
 
+        // check onboarded
+        const profile = await db.profile.findUnique({
+          where: {
+            userId: user.id
+          }
+        })
+
         return {
             id: user.id,
             name: user.name,
             email: user.email,
             image: user.image,
-            email_verified: user.emailVerified
+            onboarded: profile ? true : false
         }
       },
     }),
@@ -73,5 +85,26 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       allowDangerousEmailAccountLinking: true,
     })
   ],
+  callbacks: {
+    async jwt({ token, user, trigger, session }) {
+      if (trigger === "update" && session.user.onboarded) {
+        token.onboarded = session.user.onboarded;
+        return token;
+      };
+
+      if (user) {
+        token.id = user.id
+        token.onboarded = user.onboarded
+      }
+      return token
+    },
+    async session({ session, token }) {
+      if (token.sub && session.user) {
+        session.user.id = token.sub
+        session.user.onboarded = token.onboarded as boolean
+      }
+      return session
+    },
+  },
   debug: process.env.NODE_ENV === 'development'
 })

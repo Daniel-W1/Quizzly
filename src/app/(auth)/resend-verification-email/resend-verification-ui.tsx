@@ -8,7 +8,7 @@ import React, { useState } from 'react'
 import { useForm } from "react-hook-form"
 import { z } from "zod" 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { resendEmailVerification } from '@/app/actions/auth';
+import { resendEmailVerification } from '@/actions/auth';
 import { Loader2 } from "lucide-react";
 
 const resendVerificationSchema = z.object({
