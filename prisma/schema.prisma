@@ -28,6 +28,8 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -47,6 +49,8 @@ model User {
   resetTokenExpiry DateTime? @map("reset_token_expiry")
   emailVerificationToken String? @unique
   emailVerificationTokenExpiry DateTime? @map("email_verification_token_expiry")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
   accounts      Account[]
   profile       Profile?
 
@@ -62,9 +66,91 @@ model Profile {
   year        String
   bio         String?
   image       String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String   @unique
 
   @@map("profiles")
+}
+
+model Test {
+  id                String    @id @default(cuid())
+  title             String
+  university        String
+  department        String
+  teacherName       String   @map("teacher_name")
+  courseName        String   @map("course_name")
+  chapterNames      String   @map("chapter_names")
+  keyConcepts       KeyConcept[] @relation("KeyConceptTests")
+  examType          ExamType
+  difficultyLevel   DifficultyLevel
+  questions         Question[]
+  version           String   @map("version")
+  allowedTime       Int      @map("allowed_time") // in minutes
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+  qualityRating     QualityRating[]
+
+  @@index([title, courseName, university, department, examType, difficultyLevel])
+
+  @@map("tests")
+}
+
+model Question {
+  id                String   @id @default(cuid())
+  testId            String   @map("test_id")
+  type              String
+  statement         String
+  choices           Json
+  correctAnswer     String   @map("correct_answer")
+  explanation       String?
+  points            Int
+  mediaUrl          String?  @map("media_url")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+  keyConcepts       KeyConcept[] @relation("KeyConceptQuestions")
+
+  test              Test     @relation(fields: [testId], references: [id], onDelete: Cascade)
+
+  @@map("questions")
+}
+
+model QualityRating {
+  id                String   @id @default(cuid())
+  testId            String   @map("test_id")
+  rating            Int
+  comment           String?
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  test              Test     @relation(fields: [testId], references: [id], onDelete: Cascade) 
+
+  @@map("quality_ratings")
+}
+
+model KeyConcept {
+  id                String   @id @default(cuid())
+  name              String
+  description       String
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+  questions         Question[] @relation("KeyConceptQuestions")
+  tests             Test[] @relation("KeyConceptTests")
+
+  @@map("key_concepts")
+}
+
+enum ExamType {
+  MIDTERM
+  FINAL
+  TEST
+  QUIZ
+}
+
+enum DifficultyLevel {
+  EASY
+  MEDIUM
+  HARD
 }
