@@ -4,6 +4,7 @@ import "./globals.css";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "@/app/api/uploadthing/core";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-      <body className={`${inter.className} overflow-x-hidden`}>{children}</body>
+      <body className={`${inter.className} overflow-x-hidden`}>
+        {children}
+        <Toaster />
+      </body>
     </html>
   );
 }

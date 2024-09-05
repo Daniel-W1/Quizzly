@@ -85,6 +85,8 @@ model Test {
   chapterNames      String   @map("chapter_names")
   keyConcepts       KeyConcept[] @relation("KeyConceptTests")
   examType          ExamType
+  totalMarks         Int      @map("total_marks")
+  year              Int      @map("year")
   difficultyLevel   DifficultyLevel
   questions         Question[]
   version           String   @map("version")
@@ -93,7 +95,7 @@ model Test {
   updatedAt         DateTime @updatedAt @map("updated_at")
   qualityRating     QualityRating[]
 
-  @@index([title, courseName, university, department, examType, difficultyLevel])
+  @@index([title, courseName, university, department, examType, difficultyLevel, allowedTime, year])
 
   @@map("tests")
 }
@@ -133,12 +135,13 @@ model QualityRating {
 model KeyConcept {
   id                String   @id @default(cuid())
   name              String
-  description       String
+  description       String?
   createdAt         DateTime @default(now()) @map("created_at")
   updatedAt         DateTime @updatedAt @map("updated_at")
   questions         Question[] @relation("KeyConceptQuestions")
   tests             Test[] @relation("KeyConceptTests")
 
+  @@index([name])
   @@map("key_concepts")
 }
 
