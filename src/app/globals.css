@@ -68,6 +68,6 @@
   }
 }
 
-.education-form, .search-ui::-webkit-scrollbar {
+.education-form::-webkit-scrollbar {
   display: none;
 }
