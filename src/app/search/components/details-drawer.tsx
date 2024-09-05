@@ -106,7 +106,7 @@ const TestDetailsDrawer = ({ open, onClose, test }: TestDetailsDrawerProps) => {
                         </div>
                     </div>
                     <DrawerFooter>
-                        <Button className='w-1/2 mx-auto'>Start Test</Button>
+                        <Button className='w-1/2 mx-auto'>Go to test</Button>
                         <DrawerClose asChild>
                             <Button variant="outline" className='w-1/2 mx-auto' onClick={onClose}>Cancel</Button>
                         </DrawerClose>
