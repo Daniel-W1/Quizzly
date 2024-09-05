@@ -44,13 +44,13 @@ const TestDetailsDrawer = ({ open, onClose, test }: TestDetailsDrawerProps) => {
     return (
         <Drawer open={open}>
             <DrawerContent>
-                <div className='w-full max-w-screen-md mx-auto max-h-screen overflow-y-auto'>
+                <div className='w-full max-w-screen-md mx-auto max-h-screen overflow-y-auto overflow-x-hidden'>
                     <DrawerHeader className='flex flex-wrap justify-between'>
                         <div>
-                            <DrawerTitle className='text-2xl font-bold truncate'>{test.title}</DrawerTitle>
+                            <DrawerTitle className='text-2xl font-bold text-left text-clip'>{test.title}</DrawerTitle>
                             <DrawerDescription className='flex items-center'>
                                 <School className="w-4 h-4 mr-2" />
-                                <span className='truncate'>{`${test.university} - ${test.department}`}</span>
+                                <span className='text-clip text-left'>{`${test.university} - ${test.department}`}</span>
                             </DrawerDescription>
                         </div>
 
