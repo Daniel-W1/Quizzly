@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
@@ -17,7 +19,7 @@ const Profile = () => {
                 <DropdownMenuItem>
                     <Link href='/profile' className='mx-auto'>Go to Profile</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleSignOut} className='cursor-pointer'>
+                <DropdownMenuItem onClick={()=>{handleSignOut()}} className='cursor-pointer'>
                     <span className='mx-auto text-red-500 hover:text-red-600'>Sign Out</span>
                 </DropdownMenuItem>
             </DropdownMenuContent>
