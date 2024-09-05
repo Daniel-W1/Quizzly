@@ -114,10 +114,10 @@ function buildWhereClause(
 ): Prisma.TestWhereInput {
   return {
     OR: [
-      { title: { contains: query, mode: Prisma.QueryMode.insensitive } },
-      { courseName: { contains: query, mode: Prisma.QueryMode.insensitive } },
-      { teacherName: { contains: query, mode: Prisma.QueryMode.insensitive } },
+      { keyConcepts: { some: { name: { contains: query, mode: Prisma.QueryMode.insensitive } } } },
       { chapterNames: { contains: query, mode: Prisma.QueryMode.insensitive } },
+      { courseName: { contains: query, mode: Prisma.QueryMode.insensitive } },
+      { title: { contains: query, mode: Prisma.QueryMode.insensitive } }
     ],
     AND: [
       ...(concepts ? [{ keyConcepts: { some: { name: { in: concepts.split(",") } } } }] : []),

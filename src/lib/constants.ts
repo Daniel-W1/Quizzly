@@ -269,12 +269,15 @@ export const filterConcepts = [
   {
     department: "Computer Science",
     concepts: [
-      { value: "Software Development Life Cycle (SDLC)", label: "Software Development Life Cycle (SDLC)" },
-      { value: "Agile Methodology", label: "Agile Methodology" },
-      { value: "Waterfall Model", label: "Waterfall Model" },
-      { value: "Requirements Engineering", label: "Requirements Engineering" },
-      { value: "Use Case Diagrams", label: "Use Case Diagrams" },
-      { value: "Unified Modeling Language (UML)", label: "Unified Modeling Language (UML)" },
-    ]
+      { value: "Algorithms and Data Structures", label: "Algorithms and Data Structures" },
+      { value: "Programming Paradigms", label: "Programming Paradigms" },
+      { value: "Complexity and Big O Notation", label: "Complexity and Big O Notation" },
+      { value: "Computer Architecture", label: "Computer Architecture" },
+      { value: "Operating Systems", label: "Operating Systems" },
+      { value: "Networking and Data Transmission Protocols", label: "Networking and Data Transmission Protocols" },
+      { value: "Database Management", label: "Database Management" },
+      { value: "Artificial Intelligence", label: "Artificial Intelligence" },
+      { value: "Cybersecurity", label: "Cybersecurity" }
+    ]    
   }
-];``
+];

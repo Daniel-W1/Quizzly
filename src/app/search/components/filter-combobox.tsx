@@ -133,7 +133,7 @@ export function FilterCombobox({
                                                 selectedValues.includes(item.value) ? "hidden" : "opacity-100"
                                             )}
                                         />
-                                        <span className="truncate">{item.label}</span>
+                                        <span className="truncate max-w-[220px]">{item.label}</span>
                                     </CommandItem>
                                 ))}
                             </CommandGroup>
