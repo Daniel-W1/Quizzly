@@ -17,6 +17,7 @@ import { Badge } from '@/components/ui/badge'
 import { Clock, GraduationCap, School, User, Calendar, BookOpen, BarChart, HelpCircle, Share2, Star } from 'lucide-react'
 import { DifficultyLevel } from './test-card';
 import { useToast } from '@/hooks/use-toast';
+import Link from 'next/link';
 
 interface TestDetailsDrawerProps {
     open: boolean;
@@ -59,7 +60,7 @@ const TestDetailsDrawer = ({ open, onClose, test }: TestDetailsDrawerProps) => {
                             <Star className="w-6 h-6 cursor-pointer" />
                         </div>
                     </DrawerHeader>
-                    
+
                     <Separator className='mb-4 -mt-2' />
                     <div className="p-4 space-y-4">
                         <div className="flex items-center">
@@ -106,7 +107,10 @@ const TestDetailsDrawer = ({ open, onClose, test }: TestDetailsDrawerProps) => {
                         </div>
                     </div>
                     <DrawerFooter>
-                        <Button className='w-1/2 mx-auto'>Go to test</Button>
+                        <Button className='w-1/2 mx-auto'>
+                            <Link href={`/test/${test.id}`}>Go to test</Link>
+                        </Button>
+                        
                         <DrawerClose asChild>
                             <Button variant="outline" className='w-1/2 mx-auto' onClick={onClose}>Cancel</Button>
                         </DrawerClose>

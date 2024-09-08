@@ -5,7 +5,7 @@ import { DifficultyLevel, ExamType, Prisma } from "@prisma/client";
 const DEFAULT_PAGE = 1;
 const DEFAULT_PAGE_SIZE = 8;
 
-const testSelectFields = {
+export const testSelectFields = {
   id: true,
   title: true,
   courseName: true,

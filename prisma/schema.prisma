@@ -53,6 +53,7 @@ model User {
   updatedAt     DateTime @updatedAt @map("updated_at")
   accounts      Account[]
   profile       Profile?
+  testSessions  TestSession[]
 
   @@map("users")
 }
@@ -68,6 +69,7 @@ model Profile {
   image       String?
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
+  testSessions  TestSession[]
 
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String   @unique
@@ -78,6 +80,7 @@ model Profile {
 model Test {
   id                String    @id @default(cuid())
   title             String
+  description       String?
   university        String
   department        String
   teacherName       String   @map("teacher_name")
@@ -94,6 +97,7 @@ model Test {
   createdAt         DateTime @default(now()) @map("created_at")
   updatedAt         DateTime @updatedAt @map("updated_at")
   qualityRating     QualityRating[]
+  testSessions      TestSession[]
 
   @@index([title, courseName, university, department, examType, difficultyLevel, allowedTime, year])
 
@@ -143,6 +147,28 @@ model KeyConcept {
 
   @@index([name])
   @@map("key_concepts")
+}
+
+model TestSession {
+  id                String   @id @default(cuid())
+  testId            String   @map("test_id")
+  userId            String   @map("user_id")
+  profileId         String   @map("profile_id")
+  remainingTime     Int      @map("remaining_time")
+  questionsPerPage  Int      @map("questions_per_page")
+  selectedAnswers   Json     @map("selected_answers")
+  mood              String   @map("mood")
+  completedQuestions Int      @map("completed_questions")
+  score             Int
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  test              Test     @relation(fields: [testId], references: [id], onDelete: Cascade)
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profile           Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, testId])
+  @@map("test_sessions")
 }
 
 enum ExamType {

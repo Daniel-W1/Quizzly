@@ -17,9 +17,11 @@ import { ArrowRight, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { Progress } from "@/components/ui/progress";
 import { useRouter } from "next/navigation";
+import { useProfileStore } from "@/stores/profile-store";
 
 const AllOnboardingSteps = () => {
     const [loading, setLoading] = useState(false);
+    const setProfile = useProfileStore((state) => state.setProfile);
     const router = useRouter();
     const [error, setError] = useState<string | null>(null);
     const form = useForm<z.infer<typeof profileSchema>>({
@@ -72,6 +74,7 @@ const AllOnboardingSteps = () => {
             }
 
             setLoading(false);
+            setProfile(result);
             form.reset();
             router.push("/search");
         } catch (error: any) {

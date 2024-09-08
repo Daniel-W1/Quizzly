@@ -35,7 +35,6 @@ const SearchResults = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
     const handleTestClick = (test: Test) => {
-        console.log('Test clicked:', test)
         setSelectedTest(test)
         setIsDrawerOpen(true)
     }
@@ -88,6 +87,12 @@ const SearchResults = () => {
         )
     }
 
+    const handlePageChange = (page: number) => {
+        const params = new URLSearchParams(searchParams) 
+        params.set('page', page.toString())
+        return `/search?${params.toString()}`
+    }
+
     return (
         <div className='flex flex-col items-center justify-center w-full'>
             {noQuery && (
@@ -104,6 +109,7 @@ const SearchResults = () => {
                 <PaginationComponent
                     currentPage={currentPage}
                     totalPages={totalPages}
+                    onPageChange={handlePageChange}
                 />
             )}
             <TestDetailsDrawer open={isDrawerOpen} onClose={handleCloseDrawer} test={selectedTest} />

@@ -7,22 +7,14 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination"
-import { useSearchParams } from "next/navigation";
 
 interface PaginationComponentProps {
     currentPage: number;
     totalPages: number;
+    onPageChange: (page: number) => string;
 }
 
-export const PaginationComponent: React.FC<PaginationComponentProps> = ({ currentPage, totalPages }) => {
-    const searchParams = useSearchParams();
-
-    const handlePageChange = (page: number) => {
-        const params = new URLSearchParams(searchParams) 
-        params.set('page', page.toString())
-        return `/search?${params.toString()}`
-    }
-
+export const PaginationComponent: React.FC<PaginationComponentProps> = ({ currentPage, totalPages, onPageChange }) => {
     const generatePageNumbers = () => {
         const pages = [];
         const maxVisiblePages = 5;
@@ -49,11 +41,11 @@ export const PaginationComponent: React.FC<PaginationComponentProps> = ({ curren
     };
 
     return (
-        <Pagination className="w-full justify-end">
+        <Pagination className="w-fit">
             <PaginationContent>
                 <PaginationItem>
                     <PaginationPrevious 
-                        href={handlePageChange(currentPage - 1)}
+                        href={onPageChange(currentPage - 1)}
                         className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
                     />
                 </PaginationItem>
@@ -63,7 +55,7 @@ export const PaginationComponent: React.FC<PaginationComponentProps> = ({ curren
                             <PaginationEllipsis />
                         ) : (
                             <PaginationLink 
-                                href={handlePageChange(page as number)} 
+                                href={onPageChange(page as number)} 
                                 isActive={page === currentPage}
                             >
                                 {page}
@@ -73,7 +65,7 @@ export const PaginationComponent: React.FC<PaginationComponentProps> = ({ curren
                 ))}
                 <PaginationItem>
                     <PaginationNext 
-                        href={handlePageChange(currentPage + 1)}
+                        href={onPageChange(currentPage + 1)}
                         className={currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}
                     />
                 </PaginationItem>
