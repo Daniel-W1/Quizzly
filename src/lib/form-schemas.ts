@@ -1,4 +1,3 @@
-import { validateUsername } from "@/actions/onboarding";
 import { z } from "zod";
 
 export const passwordSchema = z
@@ -16,11 +15,9 @@ export const loginSchema = z.object({
 
 export const signupSchema = loginSchema
   .extend({
-    confirm_password: z
-      .string()
-      .min(8, {
-        message: "Confirm password must be at least 8 characters long",
-      }),
+    confirm_password: z.string().min(8, {
+      message: "Confirm password must be at least 8 characters long",
+    }),
   })
   .refine((data) => data.password === data.confirm_password, {
     message: "Passwords do not match",
@@ -42,6 +39,9 @@ export const profileSchema = z.object({
   university: z.string().min(1, { message: "University is required" }),
   department: z.string().min(1, { message: "Department is required" }),
   year: z.string().min(1, { message: "Year is required" }),
-  bio: z.string().max(100, { message: "Bio must not exceed 100 characters" }).optional(),
+  bio: z
+    .string()
+    .max(100, { message: "Bio must not exceed 100 characters" })
+    .optional(),
   image: z.string().optional(),
 });

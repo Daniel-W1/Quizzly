@@ -8,14 +8,14 @@ import { Skeleton } from './ui/skeleton'
 import UseProfileFetch from '@/hooks/use-profile-fetch'
 
 const Profile = () => {
-    const { loading } = UseProfileFetch()
+    const { loading, profile } = UseProfileFetch()
     if (loading) return <Skeleton className='w-12 h-12 rounded-full' />
 
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
                 <Avatar className='w-12 h-12 border-2 border-gray-400'>
-                    <AvatarImage src={''} alt="Profile picture" />
+                    <AvatarImage src={profile?.image || ''} alt="Profile picture" />
                     <AvatarFallback>PP</AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>
