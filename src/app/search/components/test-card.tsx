@@ -6,11 +6,11 @@ import { Badge } from '@/components/ui/badge'
 import { Clock, User, Calendar, ChevronDown, ChevronUp } from 'lucide-react'
 import { SelectSeparator } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { Test } from './search-results'
+import { TestDetails } from '@/types'
 
 interface TestCardProps {
-    test: Test,
-    onTestClick: (test: Test) => void
+    test: TestDetails,
+    onTestClick: (test: TestDetails) => void
 }
 
 export type DifficultyLevel = "easy" | "medium" | "hard"

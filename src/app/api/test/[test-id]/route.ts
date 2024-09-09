@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { testSelectFields } from "../../search/tests/route";
+import { testSelectFields } from "@/lib/constants";
 import { prisma as db } from "../../../../prisma";
 
 export async function GET(req: NextRequest, { params }: { params: { 'test-id': string } }) {

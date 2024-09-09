@@ -281,3 +281,28 @@ export const filterConcepts = [
     ]    
   }
 ];
+
+export const testSelectFields = {
+  id: true,
+  title: true,
+  courseName: true,
+  teacherName: true,
+  chapterNames: true,
+  totalMarks: true,
+  difficultyLevel: true,
+  allowedTime: true,
+  examType: true,
+  year: true,
+  university: true,
+  department: true,
+  keyConcepts: {
+    select: {
+      name: true,
+    },
+  },
+  _count: {
+    select: {
+      questions: true,
+    },
+  },
+};

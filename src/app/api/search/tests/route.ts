@@ -1,34 +1,10 @@
 import { NextResponse, NextRequest } from "next/server";
 import { prisma as db } from "../../../../prisma";
 import { DifficultyLevel, ExamType, Prisma } from "@prisma/client";
+import { testSelectFields } from "@/lib/constants";
 
 const DEFAULT_PAGE = 1;
 const DEFAULT_PAGE_SIZE = 8;
-
-export const testSelectFields = {
-  id: true,
-  title: true,
-  courseName: true,
-  teacherName: true,
-  chapterNames: true,
-  totalMarks: true,
-  difficultyLevel: true,
-  allowedTime: true,
-  examType: true,
-  year: true,
-  university: true,
-  department: true,
-  keyConcepts: {
-    select: {
-      name: true,
-    },
-  },
-  _count: {
-    select: {
-      questions: true,
-    },
-  },
-};
 
 const formatTest = (test: any) => ({
   ...test,
