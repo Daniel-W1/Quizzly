@@ -15,30 +15,21 @@ const formatTest = (test: any) => ({
 
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
-
   const query = searchParams.get("query");
-  const concepts = searchParams.get("concepts");
-  const difficulty = searchParams.get("difficulty")?.toUpperCase();
-  const examType = searchParams.get("examType")?.toUpperCase();
-  const year = searchParams.get("year");
-  const university = searchParams.get("university");
-  const department = searchParams.get("department");
-
   const page = parseInt(searchParams.get("page") || String(DEFAULT_PAGE), 10);
   const pageSize = parseInt(searchParams.get("pageSize") || String(DEFAULT_PAGE_SIZE), 10);
 
   try {
-    if (!query) {
-      return await getRecentTests(pageSize);
-    }
+    const filters = extractFilters(searchParams);
+    const where = buildWhereClause(query, filters);
 
-    const where = buildWhereClause(query, concepts, difficulty as DifficultyLevel, examType as ExamType, year, university, department);
     const [tests, totalTests] = await Promise.all([
       db.test.findMany({
         where,
         select: testSelectFields,
         skip: (page - 1) * pageSize,
         take: pageSize,
+        orderBy: query ? undefined : { createdAt: "desc" },
       }),
       db.test.count({ where }),
     ]);
@@ -51,7 +42,7 @@ export async function GET(req: NextRequest) {
       totalTests,
       totalPages,
       currentPage: page,
-      noQuery: false,
+      noQuery: !query,
     });
   } catch (error) {
     console.error("Search error:", error);
@@ -62,40 +53,24 @@ export async function GET(req: NextRequest) {
   }
 }
 
-async function getRecentTests(pageSize: number) {
-  const newTests = await db.test.findMany({
-    orderBy: { createdAt: "desc" },
-    select: testSelectFields,
-    take: pageSize,
-  });
-
-  const formattedTests = newTests.map(formatTest);
-
-  return NextResponse.json({
-    tests: formattedTests,
-    totalTests: formattedTests.length,
-    totalPages: 1,
-    currentPage: 1,
-    noQuery: true,
-  });
+function extractFilters(searchParams: URLSearchParams) {
+  return {
+    concepts: searchParams.get("concepts"),
+    difficulty: searchParams.get("difficulty")?.toUpperCase(),
+    examType: searchParams.get("examType")?.toUpperCase(),
+    year: searchParams.get("year"),
+    university: searchParams.get("university"),
+    department: searchParams.get("department"),
+  };
 }
 
 function buildWhereClause(
-  query: string,
-  concepts: string | null,
-  difficulty: string | null,
-  examType: string | null,
-  year: string | null,
-  university: string | null,
-  department: string | null
+  query: string | null,
+  filters: ReturnType<typeof extractFilters>
 ): Prisma.TestWhereInput {
-  return {
-    OR: [
-      { keyConcepts: { some: { name: { contains: query, mode: Prisma.QueryMode.insensitive } } } },
-      { chapterNames: { contains: query, mode: Prisma.QueryMode.insensitive } },
-      { courseName: { contains: query, mode: Prisma.QueryMode.insensitive } },
-      { title: { contains: query, mode: Prisma.QueryMode.insensitive } }
-    ],
+  const { concepts, difficulty, examType, year, university, department } = filters;
+
+  const whereClause: Prisma.TestWhereInput = {
     AND: [
       ...(concepts ? [{ keyConcepts: { some: { name: { in: concepts.split(",") } } } }] : []),
       ...(difficulty ? [{ difficultyLevel: difficulty as DifficultyLevel }] : []),
@@ -105,4 +80,15 @@ function buildWhereClause(
       ...(department ? [{ department: { contains: department, mode: Prisma.QueryMode.insensitive } }] : []),
     ],
   };
+
+  if (query) {
+    whereClause.OR = [
+      { keyConcepts: { some: { name: { contains: query, mode: Prisma.QueryMode.insensitive } } } },
+      { chapterNames: { contains: query, mode: Prisma.QueryMode.insensitive } },
+      { courseName: { contains: query, mode: Prisma.QueryMode.insensitive } },
+      { title: { contains: query, mode: Prisma.QueryMode.insensitive } }
+    ];
+  }
+
+  return whereClause;
 }
