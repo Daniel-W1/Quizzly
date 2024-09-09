@@ -11,6 +11,7 @@ export const testSelectFields = {
   courseName: true,
   teacherName: true,
   chapterNames: true,
+  totalMarks: true,
   difficultyLevel: true,
   allowedTime: true,
   examType: true,

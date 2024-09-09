@@ -22,6 +22,7 @@ export async function GET(
         choices: true,
         points: true,
         mediaUrl: true,
+        correctAnswer: true
       },
     });
 

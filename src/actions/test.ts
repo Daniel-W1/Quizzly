@@ -7,7 +7,7 @@ export async function createTestSession(
   profileId: string,
   mood: string,
   questionsPerPage: number,
-  remainingTime: number,
+  remainingTime: number
 ) {
   try {
     const testSession = await db.testSession.create({
@@ -33,7 +33,6 @@ export async function createTestSession(
   }
 }
 
-
 export async function deleteTestSession(testSessionId: string) {
   try {
     const deletedTestSession = await db.testSession.delete({
@@ -51,11 +50,16 @@ export async function deleteTestSession(testSessionId: string) {
   }
 }
 
-export async function updateTestSession(testSessionId: string, data: {
-  completedQuestions: number;
-  selectedAnswers: Record<string, string>;
-  remainingTime: number;
-}) {
+export async function updateTestSession(
+  testSessionId: string,
+  data: {
+    completedQuestions: number;
+    finished: boolean;
+    selectedAnswers: Record<string, string>;
+    remainingTime: number;
+    score: number;
+  }
+) {
   try {
     const updatedTestSession = await db.testSession.update({
       where: { id: testSessionId },
@@ -70,4 +74,3 @@ export async function updateTestSession(testSessionId: string, data: {
     };
   }
 }
-

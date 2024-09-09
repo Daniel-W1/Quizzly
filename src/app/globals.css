@@ -71,3 +71,12 @@
 .education-form::-webkit-scrollbar {
   display: none;
 }
+
+.sessions-right::-webkit-scrollbar {
+  display: none;
+}
+
+.drawer-content::-webkit-scrollbar {
+  display: none;
+}
+

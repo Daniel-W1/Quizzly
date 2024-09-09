@@ -20,6 +20,7 @@ export type TestDetails = {
   teacherName: string;
   chapterNames: string;
   difficultyLevel: string;
+  totalMarks: number; 
   allowedTime: number;
   examType: string;
   year: number;
@@ -37,6 +38,7 @@ export type TestSession = {
   selectedAnswers: Record<string, string>;
   mood: string;
   score: number;
+  finished: boolean;
   questionsPerPage: number;
   remainingTime: number;
   completedQuestions: number;

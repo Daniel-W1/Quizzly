@@ -7,34 +7,21 @@ import axios from 'axios'
 import LoadingSkeleton from './loading-skeleton'
 import { PaginationComponent } from '@/components/pagination'
 import TestDetailsDrawer from './details-drawer'
+import { TestDetails } from '@/types'
 
-export type Test = {
-    id: string
-    title: string
-    university: string
-    department: string
-    teacherName: string
-    courseName: string
-    examType: string
-    year: number
-    difficultyLevel: string
-    allowedTime: number
-    keyConcepts: string[]
-    questionCount: number
-}
 
 const SearchResults = () => {
-    const [tests, setTests] = useState<Test[]>([])
+    const [tests, setTests] = useState<TestDetails[]>([])
     const [loading, setLoading] = useState(true)
     const [noQuery, setNoQuery] = useState(false)
     const searchParams = useSearchParams()
     const [totalPages, setTotalPages] = useState(1)
     const [currentPage, setCurrentPage] = useState(Number(searchParams.get('page') || 1))
     const [error, setError] = useState<string | null>(null)
-    const [selectedTest, setSelectedTest] = useState<Test | null>(null)
+    const [selectedTest, setSelectedTest] = useState<TestDetails | null>(null)
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
-    const handleTestClick = (test: Test) => {
+    const handleTestClick = (test: TestDetails) => {
         setSelectedTest(test)
         setIsDrawerOpen(true)
     }

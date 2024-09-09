@@ -3,6 +3,7 @@ import React, { Suspense } from 'react'
 import QuestionsPage from './components/questions-page';
 import Image from 'next/image';
 import { Loader2 } from 'lucide-react';
+import { redirect } from 'next/navigation';
 
 const TestSessionPage = async ({ params }: { params: { 'session-id': string } }) => {
   const { 'session-id': sessionId } = params;
@@ -15,6 +16,12 @@ const TestSessionPage = async ({ params }: { params: { 'session-id': string } })
         <Image src="/error.svg" alt="Error" width={100} height={100} />
         <p className="text-lg font-medium text-center">{testDetails.error || sessionDetails.error}</p>
       </div>
+    )
+  }
+
+  if (sessionDetails.finished) {
+    return (
+      redirect(`/session/${sessionId}/result`)
     )
   }
 

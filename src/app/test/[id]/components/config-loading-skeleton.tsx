@@ -4,7 +4,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 
 const ConfigLoadingSkeleton = () => {
     return (
-        <div className="w-1/2  h-full flex flex-col justify-center items-center">
+        <div className="w-full max-w-md h-full flex flex-col justify-center items-center mx-auto">
             <Skeleton className="h-6 w-full max-w-md mx-auto mb-6" />
             <div className="mb-6 w-full max-w-md mx-auto">
                 <Skeleton className="h-4 w-full mb-2" />

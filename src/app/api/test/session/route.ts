@@ -15,16 +15,14 @@ export async function GET(req: NextRequest) {
     );
   }
   try {
-    const testSession = await db.testSession.findUnique({
+    const testSessions = await db.testSession.findMany({
       where: {
-        userId_testId: {
-          userId,
-          testId,
-        },
+        userId,
+        testId,
       },
     });
 
-    return NextResponse.json(testSession, { status: 200 });
+    return NextResponse.json(testSessions, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(

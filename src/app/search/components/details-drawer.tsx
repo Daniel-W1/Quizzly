@@ -11,10 +11,10 @@ import {
     DrawerTitle,
 } from "@/components/ui/drawer"
 import { Button } from '@/components/ui/button'
-import { Test } from './search-results';
+import { TestDetails } from '@/types';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge'
-import { Clock, GraduationCap, School, User, Calendar, BookOpen, BarChart, HelpCircle, Share2, Star } from 'lucide-react'
+import { Clock, GraduationCap, School, User, Calendar, BookOpen, BarChart, HelpCircle, Share2, Star, Tally5 } from 'lucide-react'
 import { DifficultyLevel } from './test-card';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
@@ -22,7 +22,7 @@ import Link from 'next/link';
 interface TestDetailsDrawerProps {
     open: boolean;
     onClose: () => void;
-    test: Test | null;
+    test: TestDetails | null;
 }
 
 const TestDetailsDrawer = ({ open, onClose, test }: TestDetailsDrawerProps) => {
@@ -45,7 +45,7 @@ const TestDetailsDrawer = ({ open, onClose, test }: TestDetailsDrawerProps) => {
     return (
         <Drawer open={open}>
             <DrawerContent>
-                <div className='w-full max-w-screen-md mx-auto max-h-screen overflow-y-auto overflow-x-hidden'>
+                <div className='w-full max-w-screen-md mx-auto max-h-screen overflow-y-auto overflow-x-hidden drawer-content'>
                     <DrawerHeader className='flex flex-wrap justify-between'>
                         <div>
                             <DrawerTitle className='text-2xl font-bold text-left text-clip'>{test.title}</DrawerTitle>
@@ -99,6 +99,11 @@ const TestDetailsDrawer = ({ open, onClose, test }: TestDetailsDrawerProps) => {
                             <span className="ml-2">{test.questionCount}</span>
                         </div>
                         <div className="flex flex-wrap items-center">
+                            <Tally5 className="w-5 h-5 mr-3" />
+                            <span className="font-medium mr-2">Total Marks:</span>
+                            <span className="ml-2">{test.totalMarks}</span>
+                        </div>
+                        <div className="flex flex-wrap items-center">
                             <BookOpen className="w-5 h-5 mr-3" />
                             <span className="font-medium mr-2">Concepts:</span>
                             {test.keyConcepts.map((concept, index) => (
@@ -108,9 +113,9 @@ const TestDetailsDrawer = ({ open, onClose, test }: TestDetailsDrawerProps) => {
                     </div>
                     <DrawerFooter>
                         <Button className='w-1/2 mx-auto'>
-                            <Link href={`/test/${test.id}`}>Go to test</Link>
+                            <Link href={`/test/${test.id}`} className='w-full h-full flex items-center justify-center'>Go to test</Link>
                         </Button>
-                        
+
                         <DrawerClose asChild>
                             <Button variant="outline" className='w-1/2 mx-auto' onClick={onClose}>Cancel</Button>
                         </DrawerClose>

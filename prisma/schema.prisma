@@ -160,6 +160,7 @@ model TestSession {
   mood              String   @map("mood")
   completedQuestions Int      @map("completed_questions")
   score             Int
+  finished          Boolean  @default(false)
   createdAt         DateTime @default(now()) @map("created_at")
   updatedAt         DateTime @updatedAt @map("updated_at")
 
@@ -167,7 +168,6 @@ model TestSession {
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   profile           Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, testId])
   @@map("test_sessions")
 }
 

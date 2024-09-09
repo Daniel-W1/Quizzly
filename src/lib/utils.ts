@@ -17,3 +17,8 @@ export function getFieldsForStep(step: number) {
             return [];
     }
 }
+
+export const clearLocalStorage = () => {
+    localStorage.removeItem('profile-store');
+    localStorage.removeItem('recentSearches');
+}
