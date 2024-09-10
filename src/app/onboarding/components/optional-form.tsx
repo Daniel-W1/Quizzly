@@ -9,10 +9,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { UploadButton } from '@/components/uploadthing'
 
 interface formProps {
-    form: UseFormReturn<z.infer<typeof profileSchema>>
+    form: UseFormReturn<z.infer<typeof profileSchema>>,
+    setUploadLoading: (loading: boolean) => void
 }
 
-const OptionalForm = ({ form }: formProps) => {
+const OptionalForm = ({ form, setUploadLoading }: formProps) => {
     const [previewImage, setPreviewImage] = useState<string | null>(form.watch('image') || null)
 
     return (
@@ -32,15 +33,17 @@ const OptionalForm = ({ form }: formProps) => {
                                     </Avatar>
                                     <UploadButton
                                         endpoint="imageUploader"
-                                        onClientUploadComplete={(res) => {
+                                        onClientUploadComplete={(res: any) => {
                                             if (res && res.length > 0) {
                                                 setPreviewImage(res[0].url)
                                                 form.setValue('image', res[0].url)
+                                                setUploadLoading(false)
                                             }
                                         }}
                                         onUploadError={(error: Error) => {
                                             console.error(error)
                                         }}
+                                        onUploadBegin={() => setUploadLoading(true)}
                                     />
                                 </div>
                             </FormControl>

@@ -22,6 +22,8 @@ import { useProfileStore } from "@/stores/profile-store";
 const AllOnboardingSteps = () => {
     const [loading, setLoading] = useState(false);
     const setProfile = useProfileStore((state) => state.setProfile);
+    const [usernameStatus, setUsernameStatus] = useState<'idle' | 'loading' | 'valid' | 'invalid'>('idle');
+    const [uploadLoading, setUploadLoading] = useState(false);
     const router = useRouter();
     const [error, setError] = useState<string | null>(null);
     const form = useForm<z.infer<typeof profileSchema>>({
@@ -39,9 +41,9 @@ const AllOnboardingSteps = () => {
     });
     const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next } =
         useMultistepForm([
-            <NameForm key={0} form={form} />,
+            <NameForm key={0} form={form} setUsernameStatus={setUsernameStatus} usernameStatus={usernameStatus} />,
             <EducationForm key={1} form={form} />,
-            <OptionalForm key={2} form={form} />,
+            <OptionalForm key={2} form={form} setUploadLoading={setUploadLoading} />,
         ]);
 
     const currentFields = getFieldsForStep(currentStepIndex);
@@ -57,6 +59,9 @@ const AllOnboardingSteps = () => {
         );
 
         if (!isCurrentStepValid) return;
+
+        if (currentStepIndex === 0 && usernameStatus !== 'valid') return;
+
         if (!isLastStep) {
             next();
             return;
@@ -106,7 +111,7 @@ const AllOnboardingSteps = () => {
                             Back
                         </Button>
                     }
-                    <Button type="submit" disabled={loading} className="flex items-center space-x-2">
+                    <Button type="submit" disabled={loading || uploadLoading} className="flex items-center space-x-2">
                         {isLastStep ? "Finish" : <span className="flex items-center">Next <ArrowRight className='w-4 h-4 ml-2' /></span>}
                         {loading && <Loader2 className="w-4 h-4 ml-2 animate-spin" />}
                     </Button>
