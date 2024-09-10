@@ -67,16 +67,10 @@
     @apply bg-background text-foreground;
   }
 }
-
-.education-form::-webkit-scrollbar {
-  display: none;
-}
-
-.sessions-right::-webkit-scrollbar {
-  display: none;
-}
-
-.drawer-content::-webkit-scrollbar {
+.education-form::-webkit-scrollbar,
+.sessions-right::-webkit-scrollbar,
+.drawer-content::-webkit-scrollbar,
+.questions-answers-container::-webkit-scrollbar {
   display: none;
 }
 

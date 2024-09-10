@@ -174,7 +174,7 @@ const QuestionsPage = ({ testDetails, sessionDetails }: QuestionsPageProps) => {
     return (
         <div className="min-h-screen flex flex-col items-center px-4">
             <FinishDialog isOpen={isFinishDialogOpen} onClose={() => setIsFinishDialogOpen(false)} onFinish={handleFinishTest} questionsLeft={totalQuestions - Object.keys(selectedAnswers).length} />
-            <QuestionsHeader testDetails={testDetails} countDownRef={countDownRef} remainingTime={sessionDetails.remainingTime} mood={mood} isPaused={isPaused} onPause={handlePause} onPlay={handleResume} />
+            <QuestionsHeader testDetails={testDetails} countDownRef={countDownRef} remainingTime={sessionDetails.remainingTime} mood={mood} isPaused={isPaused} onPause={handlePause} onPlay={handleResume} purpose='questions' />
 
             {!isLoading &&
                 <div className='w-full max-w-screen-lg flex flex-col space-y-4 justify-between flex-1 py-4'>
