@@ -15,6 +15,7 @@ import { useToast } from '@/hooks/use-toast';
 import Countdown from 'react-countdown';
 import FinishDialog from './finish-dialog';
 import UseSessionStorage from '@/hooks/use-session-storage';
+import { updateUserActivity } from '@/actions/profile';
 
 interface QuestionsPageProps {
     testDetails: TestDetails;
@@ -100,7 +101,6 @@ const QuestionsPage = ({ testDetails, sessionDetails }: QuestionsPageProps) => {
         setIsFinishLoading(true);
         
         const score = await calculateScore();
-        console.log(score, 'this is the score');
         const response = await updateTestSession(sessionDetails.id, {
             selectedAnswers,
             completedQuestions: Object.keys(selectedAnswers).length,
@@ -108,6 +108,9 @@ const QuestionsPage = ({ testDetails, sessionDetails }: QuestionsPageProps) => {
             finished: true,
             score
         });
+
+        await updateUserActivity(sessionDetails.userId, 'finished_test');
+
         if ("error" in response) {
             console.log(response.error);
             toast({

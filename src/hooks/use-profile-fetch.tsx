@@ -13,7 +13,6 @@ const UseProfileFetch = () => {
         const fetchProfile = async () => {
             if (!profile) {
                 try {
-                    console.log('fetching profile')
                     const res = await axios.get('/api/profile');
                     setProfile(res.data);
                 } catch (error) {

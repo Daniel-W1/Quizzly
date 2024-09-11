@@ -5,6 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 const SessionLoading = () => {
   return (
     <Tabs defaultValue="In-progress" className="h-screen w-full flex flex-col items-center px-4 sm:px-10 md:px-4 flex-1 overflow-y-auto py-8 md:max-w-xl mx-auto profile-history">
+      <Skeleton className='w-full h-24 mb-2' />
+
       <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="In-progress">In-Progress</TabsTrigger>
         <TabsTrigger value="Completed">Completed</TabsTrigger>

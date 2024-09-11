@@ -54,6 +54,7 @@ model User {
   accounts      Account[]
   profile       Profile?
   testSessions  TestSession[]
+  userActivities UserActivity[]
 
   @@map("users")
 }
@@ -170,6 +171,22 @@ model TestSession {
   profile           Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
   @@map("test_sessions")
+}
+
+model UserActivity {
+  id                String   @id @default(cuid())
+  userId            String   @map("user_id")
+  activityType      String   @map("activity_type")
+  count             Int      @map("count") @default(0)
+  date              String   @map("date")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, activityType, date])
+  @@index([userId, activityType, date])
+  @@map("user_activities")
 }
 
 enum ExamType {

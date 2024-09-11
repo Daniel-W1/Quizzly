@@ -62,3 +62,9 @@ export type Question = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type UserActivity = {
+  date: string;
+  count: number;
+}
+

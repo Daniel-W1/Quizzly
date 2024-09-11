@@ -76,3 +76,8 @@
   display: none;
 }
 
+.react-calendar-heatmap .color-scale-0 { fill: #c3d0e7; }
+.react-calendar-heatmap .color-scale-1 { fill: #7084c7; }
+.react-calendar-heatmap .color-scale-2 { fill: #316dc9; }
+.react-calendar-heatmap .color-scale-3 { fill: #2149b8; }
+.react-calendar-heatmap .color-scale-4 { fill: #151aa1; }
