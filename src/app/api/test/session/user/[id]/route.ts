@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma as db } from "../../../../../../prisma";
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
-  const { id : userId } = params;
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const { id: userId } = params;
 
   if (!userId) {
     return NextResponse.json(
@@ -16,6 +19,9 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     const testSessions = await db.testSession.findMany({
       where: {
         userId,
+      },
+      orderBy: {
+        createdAt: "desc",
       },
     });
 
