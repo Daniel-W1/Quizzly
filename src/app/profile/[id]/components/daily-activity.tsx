@@ -43,8 +43,9 @@ const DailyActivity = ({ activities }: DailyActivityProps) => {
                 }}
                 titleForValue={(value: any) => {
                     if (!value?.count) {
-                        return null;
+                        return '';
                     }
+
                     return `${value?.count} tests completed in ${value?.date}`
                 }}
             />
