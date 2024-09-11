@@ -60,7 +60,7 @@ const StartTest: React.FC<StartTestProps> = ({ testDetails }) => {
     const fetchExistingSessions = async () => {
         if (profile?.userId) {
             setSessionLoading(true);
-            const result = await axios.get(`/api/test/session?userId=${profile.userId}&testId=${testDetails.id}`).then((res) => res.data);
+            const result = await axios.get(`/api/test/${testDetails.id}/session`).then((res) => res.data);
 
             const inProgressSession = result.find((session: TestSession) => !session.finished);
             const completedSessions = result.filter((session: TestSession) => session.finished);
@@ -95,7 +95,8 @@ const StartTest: React.FC<StartTestProps> = ({ testDetails }) => {
             profile?.id as string,
             mood,
             questionsPerPage,
-            testDetails.allowedTime
+            testDetails.allowedTime,
+            testDetails.totalMarks
         );
         setLoading(false);
         if ("error" in result) {

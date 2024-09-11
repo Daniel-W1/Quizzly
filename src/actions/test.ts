@@ -7,7 +7,8 @@ export async function createTestSession(
   profileId: string,
   mood: string,
   questionsPerPage: number,
-  remainingTime: number
+  remainingTime: number,
+  totalMarks: number
 ) {
   try {
     const testSession = await db.testSession.create({
@@ -21,6 +22,7 @@ export async function createTestSession(
         remainingTime,
         completedQuestions: 0,
         score: 0,
+        totalMarks,
       },
     });
 

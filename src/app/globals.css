@@ -70,6 +70,8 @@
 .education-form::-webkit-scrollbar,
 .sessions-right::-webkit-scrollbar,
 .drawer-content::-webkit-scrollbar,
+.profile-history::-webkit-scrollbar,
+.profile-container::-webkit-scrollbar,
 .questions-answers-container::-webkit-scrollbar {
   display: none;
 }

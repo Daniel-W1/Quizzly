@@ -16,12 +16,12 @@ const Profile = () => {
             <DropdownMenuTrigger>
                 <Avatar className='w-12 h-12 border-2 border-gray-400'>
                     <AvatarImage src={profile?.image || ''} alt="Profile picture" />
-                    <AvatarFallback>PP</AvatarFallback>
+                    <AvatarFallback>{profile?.name[0]}</AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
                 <DropdownMenuItem>
-                    <Link href='/profile' className='mx-auto'>Go to Profile</Link>
+                    <Link href={`/profile/${profile?.id}`} className='mx-auto'>Go to Profile</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => {
                     clearLocalStorage()

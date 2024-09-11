@@ -29,7 +29,7 @@ const OptionalForm = ({ form, setUploadLoading }: formProps) => {
                                 <div className='flex items-center gap-4'>
                                     <Avatar className='w-20 h-20 border-2 border-gray-400'>
                                         <AvatarImage src={previewImage || ''} alt="Profile picture"/>
-                                        <AvatarFallback>PP</AvatarFallback>
+                                        <AvatarFallback>{form.watch('name')[0]}</AvatarFallback>
                                     </Avatar>
                                     <UploadButton
                                         endpoint="imageUploader"

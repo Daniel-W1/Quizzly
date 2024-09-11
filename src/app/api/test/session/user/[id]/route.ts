@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma as db } from "../../../../prisma";
+import { prisma as db } from "../../../../../../prisma";
 
-export async function GET(req: NextRequest) {
-  const params = req.nextUrl.searchParams;
-  const userId = params.get("userId");
-  const testId = params.get("testId");
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+  const { id : userId } = params;
 
-  if (!userId || !testId) {
+  if (!userId) {
     return NextResponse.json(
       {
-        error: "User ID and Test ID are required",
+        error: "User ID is required",
       },
       { status: 400 }
     );
@@ -18,7 +16,6 @@ export async function GET(req: NextRequest) {
     const testSessions = await db.testSession.findMany({
       where: {
         userId,
-        testId,
       },
     });
 
@@ -27,7 +24,7 @@ export async function GET(req: NextRequest) {
     console.error(error);
     return NextResponse.json(
       {
-        error: `Failed to fetch user test session: ${error}`,
+        error: `Failed to fetch user test sessions: ${error}`,
       },
       { status: 500 }
     );

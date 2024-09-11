@@ -38,6 +38,7 @@ export type TestSession = {
   selectedAnswers: Record<string, string>;
   mood: string;
   score: number;
+  totalMarks: number;
   finished: boolean;
   questionsPerPage: number;
   remainingTime: number;

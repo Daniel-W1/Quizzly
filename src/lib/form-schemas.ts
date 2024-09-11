@@ -45,3 +45,10 @@ export const profileSchema = z.object({
     .optional(),
   image: z.string().optional(),
 });
+
+export const profileEditSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  year: z.string(),
+  bio: z.string().max(500, "Bio must not exceed 500 characters").optional(),
+  image: z.string().optional()
+})

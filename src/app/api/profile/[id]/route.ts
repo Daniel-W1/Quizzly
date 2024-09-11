@@ -1,17 +1,13 @@
-import { NextResponse } from "next/server";
-import { prisma as db } from "../../../prisma";
-import { auth } from "@/auth";
+import { NextRequest, NextResponse } from "next/server";
+import { prisma as db } from "../../../../prisma";
 
-export async function GET() {
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
     try {
-        const session = await auth();
-        if (!session) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        }
+        const profileId = params.id;
 
         const profile = await db.profile.findUnique({
             where: {
-                userId: session.user?.id
+                id: profileId
             }
         })
 
@@ -21,6 +17,7 @@ export async function GET() {
 
         return NextResponse.json(profile);
     } catch (error) {
+        console.error(error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }

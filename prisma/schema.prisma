@@ -160,6 +160,7 @@ model TestSession {
   mood              String   @map("mood")
   completedQuestions Int      @map("completed_questions")
   score             Int
+  totalMarks        Int      @map("total_marks")
   finished          Boolean  @default(false)
   createdAt         DateTime @default(now()) @map("created_at")
   updatedAt         DateTime @updatedAt @map("updated_at")

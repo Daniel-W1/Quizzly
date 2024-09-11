@@ -4,7 +4,7 @@ import SvgWave from '@/components/wave-svg'
 import SearchFilters from './filters'
 import ContributeCard from './contribute-cta'
 import { Button } from '@/components/ui/button'
-import Profile from '@/components/profile'
+import Profile from '@/components/profile-dropdown'
 import SearchResults from './search-results'
 
 const SearchUI = () => {

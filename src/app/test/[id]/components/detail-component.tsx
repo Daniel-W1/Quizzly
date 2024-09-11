@@ -6,16 +6,19 @@ export const DetailItem: React.FC<{
     label: string;
     value: string;
     badge?: boolean;
-}> = ({ icon, label, value, badge }) => (
-    <div className="flex items-center text-left">
+    textWrap?: boolean;
+    labelVisible?: boolean;
+    className?: string;
+}> = ({ icon, label, value, badge, textWrap = true, labelVisible = true, className }) => (
+    <div className={`flex items-center text-left ${className}`}>
         {icon}
-        <span className="font-medium ml-2">{label}:</span>
+        {labelVisible && <span className="font-medium ml-2">{label}:</span>}
         {badge ? (
             <Badge variant={value.toLowerCase() as DifficultyLevel} className="ml-2">
                 {value}
             </Badge>
         ) : (
-            <span className="ml-2 truncate">{value}</span>
+            <span className={`ml-2 ${textWrap ? 'truncate' : ''}`}>{value}</span>
         )}
     </div>
 );
