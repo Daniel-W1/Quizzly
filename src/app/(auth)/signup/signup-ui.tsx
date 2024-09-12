@@ -44,7 +44,7 @@ const SignupUI = () => {
       if (result?.error) {
         setAuthError(result.error);
       } else if ('success' in result) {
-        setSuccess(result.success);
+        setSuccess(result.success as string);
         form.reset();
       }
     } catch (error) {
