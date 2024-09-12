@@ -4,6 +4,7 @@ import Image from 'next/image';
 import History from './history';
 import ProfileComponent from './profile';
 import { auth } from '@/auth';
+import CommonHeader from '@/components/header';
 
 interface ProfilePageProps {
     id: string;
@@ -24,7 +25,8 @@ const ProfilePage = async ({ id }: ProfilePageProps) => {
     }
 
     return (
-        <div className='flex flex-col md:flex-row w-screen max-w-screen-lg mx-auto items-center justify-center md:h-screen'>
+        <div className='flex flex-col md:flex-row w-screen max-w-screen-lg mx-auto items-center justify-center md:h-screen pt-28'>
+            <CommonHeader />
             <ProfileComponent profile={profile} isOwner={isOwner as boolean} />
             <History userId={profile.userId} />
         </div>

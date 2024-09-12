@@ -118,9 +118,9 @@ const StartTest: React.FC<StartTestProps> = ({ testDetails }) => {
     };
 
     return (
-        <div className="flex flex-col lg:flex-row max-w-screen-xl lg:h-screen mx-auto bg-white rounded-lg">
+        <div className="w-full flex flex-col lg:flex-row max-w-screen-xl lg:h-screen mx-auto bg-white rounded-lg">
             {/* Left side: Test details */}
-            <div className="w-full h-full max-w-lg mx-auto lg:w-1/2 px-4 py-4 lg:py-14">
+            <div className="w-full h-full max-w-lg mx-auto lg:w-1/2 px-4 py-16 lg:py-14">
                 <h2 className="text-2xl font-bold mb-4">{testDetails.title}</h2>
                 <p className="mb-4 text-gray-600">{testDetails.description}</p>
 

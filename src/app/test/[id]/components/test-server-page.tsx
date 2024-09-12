@@ -3,6 +3,7 @@ import StartTest from './start-test';
 import { TestDetails } from "@/types";
 import Image from "next/image";
 import axios from "axios";
+import CommonHeader from '@/components/header';
 
 interface TestServerPageProps {
     id: string;
@@ -21,6 +22,9 @@ export default async function TestPage({ id }: TestServerPageProps) {
     }
 
     return (
-        <StartTest testDetails={testDetails as TestDetails} />
+        <div className='w-screen pt-8 flex justify-center'>
+            <CommonHeader />
+            <StartTest testDetails={testDetails as TestDetails} />
+        </div>
     )
 }

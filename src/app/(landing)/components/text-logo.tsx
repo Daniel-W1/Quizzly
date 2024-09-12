@@ -7,9 +7,10 @@ interface TextLogoProps {
   fontSize: string;
   fontWeight: string;
   fontFamily: string;
+  marginTop?: boolean;
 }
 
-const TextLogo: React.FC<TextLogoProps> = ({ text, color, fontSize, fontWeight, fontFamily }) => {
+const TextLogo: React.FC<TextLogoProps> = ({ text, color, fontSize, fontWeight, fontFamily, marginTop = false }) => {
   return (
     <Link
       href="/"
@@ -18,9 +19,9 @@ const TextLogo: React.FC<TextLogoProps> = ({ text, color, fontSize, fontWeight, 
         fontSize,
         fontWeight,
         fontFamily,
-        margin: 0,
         padding: 0,
       }}
+      className={`${marginTop ? '-mt-4' : 'm-0'}`}
     >
       {text}
     </Link>
