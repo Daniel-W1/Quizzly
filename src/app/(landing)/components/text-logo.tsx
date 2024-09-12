@@ -21,7 +21,7 @@ const TextLogo: React.FC<TextLogoProps> = ({ text, color, fontSize, fontWeight, 
         fontFamily,
         padding: 0,
       }}
-      className={`${marginTop ? '-mt-4' : 'm-0'}`}
+      className={`${marginTop ? '-mt-2' : 'm-0'}`}
     >
       {text}
     </Link>

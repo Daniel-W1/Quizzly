@@ -9,13 +9,14 @@ interface CommonHeaderProps {
 
 const CommonHeader = ({ bgVisible = true }: CommonHeaderProps) => {
     return (
-        <div className={`flex justify-between items-center space-x-4 w-full max-w-screen-xl px-2 md:px-8 py-4 absolute top-0 z-20 ${bgVisible ? 'bg-background' : ''}`}>
-            <TextLogo text="Quizzly"
+        <div className={`flex justify-between items-start space-x-4 w-full max-w-screen-xl px-2 md:px-8 py-2 absolute top-0 z-20 ${bgVisible ? 'bg-white border-b-[1px] border-gray-200 backdrop-filter backdrop-blur-lg bg-opacity-60' : ''}`}>
+            <TextLogo 
+                text="Quizzly"
                 color="#0065F2"
                 fontSize="clamp(26px, 5vw, 32px)"
                 fontWeight="bold"
                 fontFamily="sans-serif"
-                marginTop={true}
+                marginTop={!bgVisible}
             />
             <div className='flex h-full items-center space-x-4'>
                 <Button>Contribute</Button>
