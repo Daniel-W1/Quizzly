@@ -51,7 +51,7 @@ const History = ({ userId }: HistoryProps) => {
     return (
         <Tabs defaultValue="In-progress" className="h-screen w-full flex flex-col items-center px-4 sm:px-10 md:px-4 flex-1 overflow-y-auto py-8 md:max-w-xl mx-auto profile-history">
             <DailyActivity activities={activities} />
-            <TabsList className="grid w-full grid-cols-2 sticky -top-4 z-50 border-b border-gray-200 shadow-sm">
+            <TabsList className="grid w-full grid-cols-2 sticky -top-6 z-50 border-b border-gray-200 shadow-sm">
                 <TabsTrigger value="In-progress">In-Progress</TabsTrigger>
                 <TabsTrigger value="Completed">Completed</TabsTrigger>
             </TabsList>
