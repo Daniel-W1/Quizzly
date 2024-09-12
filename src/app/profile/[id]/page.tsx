@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import axios from 'axios';
 import Image from 'next/image';
 import History from './components/history';
 import ProfileComponent from './components/profile';
 import { auth } from '@/auth';
+import { Loader2 } from 'lucide-react';
 
 const ProfilePage = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
@@ -19,12 +20,14 @@ const ProfilePage = async ({ params }: { params: { id: string } }) => {
       </div>
     );
   }
-  
+
   return (
-    <div className='flex flex-col md:flex-row w-screen max-w-screen-lg mx-auto items-center justify-center md:h-screen'>
-      <ProfileComponent profile={profile} isOwner={isOwner as boolean} />
-      <History userId={profile.userId} />
-    </div>
+    <Suspense fallback={<div className='flex items-center justify-center min-h-screen'><Loader2 className='animate-spin' /></div>}>
+      <div className='flex flex-col md:flex-row w-screen max-w-screen-lg mx-auto items-center justify-center md:h-screen'>
+        <ProfileComponent profile={profile} isOwner={isOwner as boolean} />
+        <History userId={profile.userId} />
+      </div>
+    </Suspense>
   )
 }
 

@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import Score from './components/score'
 import axios from 'axios';
 import QuestionsWithAnswers from './components/questions-with-answers';
+import { Loader2 } from 'lucide-react';
 
 const SessionResult = async ({ params }: { params: { 'session-id': string } }) => {
   const { 'session-id': sessionId } = params;
@@ -9,10 +10,12 @@ const SessionResult = async ({ params }: { params: { 'session-id': string } }) =
   const testDetails = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/test/${sessionDetails.testId}`).then((res) => res.data);
 
   return (
-    <div className='flex flex-col lg:flex-row items-center min-h-screen w-screen max-w-screen-xl mx-auto'>
+    <Suspense fallback={<div className='flex items-center justify-center min-h-screen'><Loader2 className='animate-spin' /></div>}>
+      <div className='flex flex-col lg:flex-row items-center min-h-screen w-screen max-w-screen-xl mx-auto'>
         <Score score={sessionDetails.score} totalMarks={testDetails.totalMarks} />
         <QuestionsWithAnswers testDetails={testDetails} sessionDetails={sessionDetails} />
-    </div>
+      </div>
+    </Suspense>
   )
 }
 

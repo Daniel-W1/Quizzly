@@ -1,5 +1,7 @@
 "use server"
 
+import React, { Suspense } from 'react';
+import { Loader2 } from 'lucide-react';
 import StartTest from "./components/start-test";
 import { TestDetails } from "@/types";
 import Image from "next/image";
@@ -17,5 +19,9 @@ export default async function TestPage({ params }: { params: { id: string } }) {
         )
     }
 
-    return <StartTest testDetails={testDetails as TestDetails} />
+    return (
+        <Suspense fallback={<div className='flex items-center justify-center min-h-screen'><Loader2 className='animate-spin' /></div>}>
+            <StartTest testDetails={testDetails as TestDetails} />
+        </Suspense>
+    )
 }
