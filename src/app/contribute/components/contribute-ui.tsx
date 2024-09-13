@@ -29,6 +29,7 @@ const ContributeUI = () => {
                 description: response.success,
                 variant: 'success'
             })
+            setEmail('')
         }
     }
     return (
