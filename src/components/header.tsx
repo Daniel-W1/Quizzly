@@ -2,6 +2,7 @@ import React from 'react'
 import { Button } from './ui/button'
 import Profile from './profile-dropdown'
 import TextLogo from '@/app/(landing)/components/text-logo'
+import Link from 'next/link'
 
 interface CommonHeaderProps {
     bgVisible?: boolean;
@@ -18,8 +19,10 @@ const CommonHeader = ({ bgVisible = true }: CommonHeaderProps) => {
                 fontFamily="sans-serif"
                 marginTop={!bgVisible}
             />
-            <div className='flex h-full items-center space-x-4'>
-                <Button>Contribute</Button>
+            <div className='flex h-full items-center space-x-4 w-fit'>
+                <Link href='/contribute' className='w-fit px-4 py-2 bg-primary text-white text-sm rounded-md h-full'>
+                    Contribute
+                </Link>
                 <Profile />
             </div>
         </div>
