@@ -85,7 +85,12 @@ export const handleEmailSignUp = async (email: string, password: string) => {
       },
     });
 
-    return await sendEmailVerification(newUser.email!, emailVerificationToken);
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/send-email-verification`, {
+      email: newUser.email!,
+      token: emailVerificationToken,
+    });
+
+    return response.data;
   } catch (error) {
     console.error("Error in handleEmailSignUp:", error);
     return {
@@ -151,35 +156,6 @@ export const handleResetPassword = async (
   }
 };
 
-export const sendEmailVerification = async (email: string, token: string) => {
-  try {
-    const transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_SERVER_HOST,
-      port: parseInt(process.env.EMAIL_SERVER_PORT!, 10),
-      auth: {
-        user: process.env.EMAIL_SERVER_USER,
-        pass: process.env.EMAIL_SERVER_PASSWORD,
-      },
-    });
-
-    const verificationUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?emailtoken=${token}`;
-
-    await transporter.sendMail({
-      to: email,
-      subject: "Email Verification",
-      html: `<p>Please click the link below to verify your email:</p>
-             <a href="${verificationUrl}">Verify Email</a>`,
-    });
-
-    return { success: "Email verification sent. Please check your email." };
-  } catch (error) {
-    console.error("Error in sendEmailVerification:", error);
-    return {
-      error: "Failed to send email verification. Please try again later.",
-    };
-  }
-};
-
 export const resendEmailVerification = async (email: string) => {
   try {
     const user = await db.user.findUnique({
@@ -229,7 +205,12 @@ export const resendEmailVerification = async (email: string) => {
       },
     });
 
-    return await sendEmailVerification(user.email!, emailVerificationToken);
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/send-email-verification`, {
+      email: user.email!,
+      token: emailVerificationToken,
+    });
+
+    return response.data;
   } catch (error) {
     console.error("Error in resendEmailVerification:", error);
     return {

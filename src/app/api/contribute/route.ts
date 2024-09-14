@@ -1,9 +1,14 @@
-"use server";
-
+import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
-export const sendJoinContributeEmail = async (email: string) => {
+export async function POST(req: NextRequest) {
   try {
+    const { email } = await req.json();
+
+    if (!email) {
+      return NextResponse.json({ error: "Email is required" }, { status: 400 });
+    }
+
     const transporter = nodemailer.createTransport({
       host: process.env.EMAIL_SERVER_HOST,
       port: parseInt(process.env.EMAIL_SERVER_PORT!, 10),
@@ -28,11 +33,9 @@ export const sendJoinContributeEmail = async (email: string) => {
       `,
     });
 
-    return { success: "Next steps sent. Please check your inbox." };
+    return NextResponse.json({ success: "Next steps sent. Please check your inbox." }, { status: 200 });
   } catch (error) {
     console.error("Error in sendJoinContributeEmail:", error);
-    return {
-      error: "Failed to send welcome email. Please try again later.",
-    };
+    return NextResponse.json({ error: "Failed to send welcome email. Please try again later." }, { status: 500 });
   }
-};
+}

@@ -99,7 +99,7 @@ const QuestionsPage = ({ testDetails, sessionDetails }: QuestionsPageProps) => {
     const handleFinishTest = async () => {
         setIsFinishDialogOpen(false);
         setIsFinishLoading(true);
-        
+
         const score = await calculateScore();
         const response = await updateTestSession(sessionDetails.id, {
             selectedAnswers,
@@ -122,7 +122,13 @@ const QuestionsPage = ({ testDetails, sessionDetails }: QuestionsPageProps) => {
         else {
             clearSessionStorage(testDetails.id + '-countdown');
             clearSessionStorage('selectedAnswers');
-            router.push(`/session/${sessionDetails.id}/result`)
+
+            if (mood === 'focused') {
+                router.push(`/session/${sessionDetails.id}/result`)
+            }
+            else {
+                router.push(`/search`)
+            }
         }
         setIsFinishLoading(false);
     }
@@ -189,6 +195,7 @@ const QuestionsPage = ({ testDetails, sessionDetails }: QuestionsPageProps) => {
                                 question={question}
                                 handleAnswerSelection={(choiceId) => handleAnswerSelection(choiceId, question.id)}
                                 selectedAnswer={selectedAnswers[question.id]}
+                                mood={mood}
                             />
                         ))
                     }

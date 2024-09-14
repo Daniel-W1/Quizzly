@@ -1,4 +1,6 @@
-import React from 'react'
+'use client'
+
+import React, { useState } from 'react'
 import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
@@ -11,6 +13,7 @@ interface QuestionCardProps {
     question: Question;
     selectedAnswer: string;
     purpose?: 'questions' | 'result';
+    mood: string;
 }
 
 const QuestionCard = ({
@@ -18,8 +21,11 @@ const QuestionCard = ({
     question,
     handleAnswerSelection,
     selectedAnswer,
-    purpose = 'questions'
+    purpose = 'questions',
+    mood
 }: QuestionCardProps) => {
+    const [userAnswered, setUserAnswered] = useState(selectedAnswer !== undefined);
+
     return (
         <Card className="w-full max-w-screen-lg mx-auto">
             <CardHeader className="bg-gray-100 rounded-t-lg">
@@ -48,27 +54,31 @@ const QuestionCard = ({
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2">
                     {JSON.parse(question.choices as any).map((choice: string) => {
                         const isSelected = selectedAnswer === choice;
-                        const isCorrect = purpose === 'result' && choice === question.correctAnswer;
-                        const isIncorrect = purpose === 'result' && isSelected && !isCorrect;
+                        const isCorrect = choice === question.correctAnswer;
+                        const isIncorrect = isSelected && !isCorrect;
+                        const showResult = purpose === 'result' || (mood === 'chill' && userAnswered);
 
                         return (<Button
                             key={choice}
                             variant="outline"
                             className={cn("text-left relative", {
-                                "border-2 border-green-500 bg-green-100": isCorrect,
-                                "border-2 border-red-500 bg-red-100": isIncorrect,
-                                "border-2 border-blue-500 bg-accent text-accent-foreground": purpose === 'questions' && isSelected,
+                                "border-2 border-green-500 bg-green-100": showResult && isCorrect,
+                                "border-2 border-red-500 bg-red-100": showResult && isIncorrect,
+                                "border-2 border-blue-500 bg-accent text-accent-foreground": purpose === 'questions' && isSelected && mood === 'focused',
                             })}
-                            onClick={() => handleAnswerSelection && handleAnswerSelection(choice)}
-                            disabled={purpose === 'result'}
+                            onClick={() => {
+                                handleAnswerSelection && handleAnswerSelection(choice);
+                                setUserAnswered(true);
+                            }}
+                            disabled={purpose === 'result' || (mood === 'chill' && userAnswered)}
                         >
                             {choice}
-                            {isCorrect && (
+                            {showResult && isCorrect && (
                                 <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-green-600">
                                     ✓
                                 </span>
                             )}
-                            {isIncorrect && (
+                            {showResult && isIncorrect && (
                                 <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-red-600">
                                     ✗
                                 </span>
@@ -78,7 +88,7 @@ const QuestionCard = ({
                 </div>
             </CardContent>
             {/*we can add a footer for chat, and other purposes*/}
-            {purpose === 'result' && question.explanation && (
+            {purpose === 'result' ||  (mood === 'chill' && userAnswered) && question.explanation && (
                 <CardFooter>
                     <p className="text-sm text-gray-500">{question.explanation}</p>
                 </CardFooter>

@@ -1,3 +1,5 @@
+import { NextMiddleware } from 'next/server'
+
 export type Profile = {
   id: string;
   userId: string;
@@ -69,3 +71,4 @@ export type UserActivity = {
   count: number;
 }
 
+export type MiddlewareFactory = (middleware: NextMiddleware) => NextMiddleware

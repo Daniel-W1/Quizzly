@@ -1,11 +1,11 @@
 'use client'
-import { sendJoinContributeEmail } from '@/actions/contribute'
 import CommonHeader from '@/components/header'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/hooks/use-toast'
 import { Loader2 } from 'lucide-react'
 import React, { useState } from 'react'
+import axios from 'axios'
 
 const ContributeUI = () => {
     const [email, setEmail] = useState('')
@@ -15,7 +15,7 @@ const ContributeUI = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setLoading(true)
-        const response = await sendJoinContributeEmail(email)
+        const response = await axios.post('/api/contribute', { email }).then((res) => res.data)
         setLoading(false)
         if (response.error) {
             toast({
