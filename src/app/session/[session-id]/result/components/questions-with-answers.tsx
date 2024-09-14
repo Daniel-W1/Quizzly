@@ -51,6 +51,7 @@ const QuestionsWithAnswers = ({ testDetails, sessionDetails }: QuestionsWithAnsw
                                 question={question}
                                 selectedAnswer={sessionDetails.selectedAnswers[question.id]}
                                 purpose='result'
+                                mood={mood}
                             />
                         ))
                     }
