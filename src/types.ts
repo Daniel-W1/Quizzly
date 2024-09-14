@@ -8,6 +8,7 @@ export type Profile = {
   year: string;
   bio: string | null;
   image: string | null;
+  totalContribution: number;
   createdAt: Date;
   updatedAt: Date;
 };

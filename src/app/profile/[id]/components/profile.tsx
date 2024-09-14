@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { Profile } from '@/types'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { DetailItem } from '@/app/test/[id]/components/detail-component'
-import { BookOpen, Calendar, Edit, School } from 'lucide-react'
+import { BookOpen, Calendar, Edit, Gem, School } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
 import EditProfileModal from './edit-profile-modal'
 
@@ -41,6 +41,8 @@ const ProfileComponent = ({ profile, isOwner }: ProfileProps) => {
                 <DetailItem icon={<BookOpen className="w-4 h-4 sm:w-5 sm:h-5" />} label="Department" value={profile.department} textWrap={false} labelVisible={false} className='hover:bg-gray-100 rounded-md p-2 text-sm sm:text-base' />
                 <Separator />
                 <DetailItem icon={<Calendar className="w-4 h-4 sm:w-5 sm:h-5" />} label="Year" value={profile.year} textWrap={false} labelVisible={false} className='hover:bg-gray-100 rounded-md p-2 text-sm sm:text-base' />
+                <Separator />
+                <DetailItem icon={<Gem className="w-4 h-4 sm:w-5 sm:h-5" />} label="Contribution" value={profile.totalContribution.toString() + " contributions"} textWrap={false} labelVisible={false} className='hover:bg-gray-100 rounded-md p-2 text-sm sm:text-base' />
             </div>
             {profile.bio && (
                 <div className="p-4 w-full">

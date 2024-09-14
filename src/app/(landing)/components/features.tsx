@@ -1,22 +1,25 @@
 import React from 'react'
 import FeatureCard from './feature'
-import { Dice6, LibraryBig, UsersRound } from 'lucide-react'
+import { LibraryBig, Sparkles, UsersRound } from 'lucide-react'
 
 const features = [
     {
-        title: "Study Groups",
-        description: "Connect with peers, collaborate on notes, and prepare for exams together in public or private groups.",
-        icon: <UsersRound className='w-8 h-8' />
-    },
-    {
         title: "Resource Hub",
         description: "Access a curated repository of past exams, notes, and quizzes tailored to your academic needs.",
-        icon: <LibraryBig className='w-8 h-8' />
+        icon: <LibraryBig className='w-8 h-8' />,
+        comingSoon: false
     },
     {
-        title: "Quizzes",
-        description: "Test your knowledge with custom quizzes and compete on leaderboards for engaging revision.",
-        icon: <Dice6 className='w-8 h-8' />
+        title: "AI Study Buddy",
+        description: "Get personalized study discussions with an AI that understands your academic materials.",
+        icon: <Sparkles className='w-8 h-8' />,
+        comingSoon: true
+    },
+    {
+        title: "Study Groups",
+        description: "Connect with peers, collaborate on notes, and prepare for exams together in public or private groups.",
+        icon: <UsersRound className='w-8 h-8' />,
+        comingSoon: true
     }
 ]
 

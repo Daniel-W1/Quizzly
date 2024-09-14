@@ -55,6 +55,7 @@ model User {
   profile       Profile?
   testSessions  TestSession[]
   userActivities UserActivity[]
+  contributions Contribution[]
 
   @@map("users")
 }
@@ -71,6 +72,7 @@ model Profile {
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
   testSessions  TestSession[]
+  totalContribution Int      @map("total_contribution") @default(0)
 
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String   @unique
@@ -99,6 +101,7 @@ model Test {
   updatedAt         DateTime @updatedAt @map("updated_at")
   qualityRating     QualityRating[]
   testSessions      TestSession[]
+  contribution     Contribution?
 
   @@index([title, courseName, university, department, examType, difficultyLevel, allowedTime, year])
 
@@ -189,6 +192,22 @@ model UserActivity {
   @@map("user_activities")
 }
 
+model Contribution {
+  id        String   @id @default(cuid())
+  userId    String
+  testId    String   @unique
+  points    Int
+  
+  status    ContributionStatus   @map("status")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  test      Test     @relation(fields: [testId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, testId])
+}
+
 enum ExamType {
   MIDTERM
   FINAL
@@ -201,3 +220,10 @@ enum DifficultyLevel {
   MEDIUM
   HARD
 }
+
+enum ContributionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
