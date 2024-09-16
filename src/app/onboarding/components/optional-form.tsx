@@ -7,6 +7,7 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/comp
 import { Textarea } from '@/components/ui/textarea'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { UploadButton } from '@/components/uploadthing'
+import { useToast } from '@/hooks/use-toast'
 
 interface formProps {
     form: UseFormReturn<z.infer<typeof profileSchema>>,
@@ -15,6 +16,23 @@ interface formProps {
 
 const OptionalForm = ({ form, setUploadLoading }: formProps) => {
     const [previewImage, setPreviewImage] = useState<string | null>(form.watch('image') || null)
+    const { toast } = useToast()
+
+    const handleToast = (error: Error) => {
+        if (error.message === "Invalid config: FileSizeMismatch") {
+            toast({
+                title: 'Error',
+                description: 'File size too large',
+                variant: 'destructive'
+            })
+        } else {
+            toast({
+                title: 'Error',
+                description: error.message,
+                variant: 'destructive'
+            })
+        }
+    }
 
     return (
         <FormWrapper title='Optional Details' description='Add profile picture and bio'>
@@ -28,7 +46,7 @@ const OptionalForm = ({ form, setUploadLoading }: formProps) => {
                             <FormControl>
                                 <div className='flex items-center gap-4'>
                                     <Avatar className='w-20 h-20 border-2 border-gray-400'>
-                                        <AvatarImage src={previewImage || ''} alt="Profile picture"/>
+                                        <AvatarImage src={previewImage || ''} alt="Profile picture" />
                                         <AvatarFallback>{form.watch('name')[0]}</AvatarFallback>
                                     </Avatar>
                                     <UploadButton
@@ -41,9 +59,10 @@ const OptionalForm = ({ form, setUploadLoading }: formProps) => {
                                             }
                                         }}
                                         onUploadError={(error: Error) => {
-                                            console.error(error)
+                                            handleToast(error)
                                         }}
                                         onUploadBegin={() => setUploadLoading(true)}
+                                        onUploadAborted={() => setUploadLoading(false)}
                                     />
                                 </div>
                             </FormControl>
