@@ -329,7 +329,7 @@ const populateTests = async () => {
   }
 };
 
-import { model22016, model22016_concepts } from "@/lib/model2-2016";
+// import { model22016, model22016_concepts } from "@/lib/model2-2016";
 
 const addKeyConcepts = async (concepts: any) => {
   try {
@@ -358,7 +358,8 @@ const addKeyConcepts = async (concepts: any) => {
 
 const createTest = async (test: any) => {
   try {
-    const testConcepts: any = await addKeyConcepts(model22016_concepts);
+    // const testConcepts: any = await addKeyConcepts(model22016_concepts);
+    const testConcepts: any = {}
     const createdTest = await prisma.test.create({
       data: {
 
@@ -387,4 +388,4 @@ const getAllKeyConcepts = async () => {
   return keyConcepts;
 };
 
-createTest(model22016)
+// createTest(model22016)
