@@ -213,6 +213,8 @@ enum ExamType {
   FINAL
   TEST
   QUIZ
+  ENTRANCE
+  EXIT
 }
 
 enum DifficultyLevel {

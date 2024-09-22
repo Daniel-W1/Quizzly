@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
-const examTypes = ['Test','Midterm', 'Final', 'Quiz']
-const years = ['2023', '2022', '2021', '2020', '2019']
+const examTypes = ['Test','Midterm', 'Final', 'Quiz', 'Entrance', 'Exit']
+const years = ['2024', '2023', '2022', '2021', '2020', '2019']
 const difficultyLevels = ['Easy', 'Medium', 'Hard']
 
 const FilterSelects = () => {

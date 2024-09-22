@@ -36,7 +36,7 @@ const QuestionCard = ({
                     </span>
                 </div>
                 <div className='flex flex-col'>
-                    <p className="text-lg">{question.statement}</p>
+                    <p className="text-lg whitespace-pre-wrap">{question.statement}</p>
                     {question.mediaUrl && (
                         <div className="mt-4">
                             <Image
@@ -52,7 +52,7 @@ const QuestionCard = ({
             </CardHeader>
             <CardContent className="mt-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2">
-                    {JSON.parse(question.choices as any).map((choice: string) => {
+                    {JSON.parse(JSON.stringify(question.choices) as any).map((choice: string) => {
                         const isSelected = selectedAnswer === choice;
                         const isCorrect = choice === question.correctAnswer;
                         const isIncorrect = isSelected && !isCorrect;
@@ -61,7 +61,8 @@ const QuestionCard = ({
                         return (<Button
                             key={choice}
                             variant="outline"
-                            className={cn("text-left relative", {
+                            size="lg"
+                            className={cn("text-left relative text-wrap h-fit", {
                                 "border-2 border-green-500 bg-green-100": showResult && isCorrect,
                                 "border-2 border-red-500 bg-red-100": showResult && isIncorrect,
                                 "border-2 border-blue-500 bg-accent text-accent-foreground": purpose === 'questions' && isSelected && mood === 'focused',
@@ -88,7 +89,7 @@ const QuestionCard = ({
                 </div>
             </CardContent>
             {/*we can add a footer for chat, and other purposes*/}
-            {purpose === 'result' ||  (mood === 'chill' && userAnswered) && question.explanation && (
+            {(purpose === 'result' ||  (mood === 'chill' && userAnswered)) && question.explanation && (
                 <CardFooter>
                     <p className="text-sm text-gray-500">{question.explanation}</p>
                 </CardFooter>

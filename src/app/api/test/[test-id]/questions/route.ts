@@ -18,6 +18,7 @@ export async function GET(
       select: {
         id: true,
         type: true,
+        explanation: true,
         statement: true,
         choices: true,
         points: true,
